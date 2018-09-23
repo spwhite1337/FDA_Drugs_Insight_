@@ -137,7 +137,7 @@ file_name = []
 j = 0
 #for i in range(0,len(urls)): # This goes through all the data
 print('Progress...')
-for i in range(513,len(urls)):
+for i in range(600,602):
     start_time = timeit.default_timer()
     print('File {num} with size = {size} MB downloading...'.format(num = i, size = partitions[i]['size_mb']))
     url = urls[i] # Get the url
@@ -186,7 +186,6 @@ print('Approximate Size of packed file is {size:.2f} MB'.format(size = size/10**
 # File information
 type_file = type(data_2)
 type_entry = type(data_2[0]['results'][0])
-txt_size = os.path.getsize('./progress/data_2.txt')
 
 size = 0
 for i in range(0, len(data_2)):
@@ -195,7 +194,6 @@ for i in range(0, len(data_2)):
 print('Number of files = {}'.format(len(file_name)))
 print('data_2 is a {} where entries of data_2[0][\'results\'][0] are {}'.format(type_file, type_entry))
 print('Approximate Size of packed file is {size:.2f} MB'.format(size = size/10**6))
-print('Total Size of stored txt file is {size:.2f} MB'.format(size = txt_size/10**6))
 
 # Select the files to save
 model_num = ['X_1', 'X_2', 'X_3']
@@ -254,7 +252,7 @@ entries_len = []
 
 ### generic_name
 test_col = 'generic_name'
-
+print(df['generic_name'].head())
 ### One-hot-encode with condensed input
 # Generate list of unique drugs
 unique_entries = unique_gen(test_col, df)
@@ -279,8 +277,10 @@ print('Done.')
 unique_entries_generic_name = unique_entries
 
 # clean up
-df_tmp = df_tmp.drop(['5%'], axis=1)
-df_tmp = df_tmp.drop([''], axis = 1)
+if '5%' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop(['5%'], axis=1)
+if '' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop([''], axis = 1)
 
 # start the final df
 entries_len.append(len(df_tmp.columns))
@@ -326,7 +326,8 @@ print('Done.')
 unique_entries_drug_indication = unique_entries
 
 # clean up
-df_tmp = df_tmp.drop([''], axis = 1)
+if '' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop([''], axis = 1)
 
 # join to the rest
 entries_len.append(len(df_tmp.columns))
@@ -339,8 +340,10 @@ df_ML = pd.concat([df_ML, df_tmp], axis=1, join_axes=[df_ML.index])
 df_tmp = one_hot_encode_drugs('admin_route', df)
 
 # Clean up
-df_tmp = df_tmp.drop(['Unknown'], axis = 1)
-df_tmo = df_tmp.drop(['Not Listed'], axis = 1)
+if 'Unknown' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop(['Unknown'], axis = 1)
+if 'Not Listed' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop(['Not Listed'], axis = 1)
 
 # join to the rest
 entries_len.append(len(df_tmp.columns))
@@ -380,7 +383,8 @@ df_tmp = pd.Series(col_list_ML).str.join(',').str.split(',',expand = True).apply
 print('Done.')
 
 # clean up
-df_tmp = df_tmp.drop([''], axis = 1)
+if '' in list(df_tmp.columns):
+    df_tmp = df_tmp.drop([''], axis = 1)
 
 # joing to the rest
 entries_len.append(len(df_tmp.columns))
@@ -403,6 +407,7 @@ if save_df or save_all:
     df_ML_filename = './progress/modeling/df_ML_model_' + model_num + '.csv'
     df_ML.to_csv(df_ML_filename)
 
+entries = list(df_ML.columns)
 # save the entries
 if save_entries or save_all:
     entries_filename = './progress/modeling/entries_' + model_num + '.txt'

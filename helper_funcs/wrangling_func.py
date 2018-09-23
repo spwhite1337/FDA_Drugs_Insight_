@@ -337,7 +337,6 @@ def entry_condenser(unique_col, char_lim = None):
     # Get similarity matrix
     words = np.asarray(words)
     lev_similarity = -1*np.array([[distance(w1,w2) for w1 in words] for w2 in words])
-
     # Fit an affinity model
     affprop = sklearn.cluster.AffinityPropagation(affinity="precomputed", damping=0.5)
     affprop.fit(lev_similarity)
