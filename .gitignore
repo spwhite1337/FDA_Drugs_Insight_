@@ -1,0 +1,15 @@
+# models
+*.csv
+# saved stuff
+*.pkl
+# saved stuff
+*.txt
+# zip files
+*.zip
+
+# presentation files
+*.docx
+*.pdf
+*.odt
+*.odp
+*.pptx

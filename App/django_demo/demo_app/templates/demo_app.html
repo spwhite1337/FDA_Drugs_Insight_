@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load static %}
+{% block body_block %}
+
+ <p>
+   {{ Message }}
+ </p>
+
+
+<form method="post">
+  <div class="form-group">
+    {% csrf_token %}
+    <p>
+      {{ form }}
+    </p>
+
+    {{ formset.management_form }}
+    <div id="form_set">
+        {% for form in formset.forms %}
+            <table class='no_error'>
+                {{ form.as_table }}
+            </table>
+        {% endfor %}
+    </div>
+    <input type="button" value="Add More" id="add_more">
+    <div id="empty_form" style="display:none">
+        <table class='no_error'>
+            {{ formset.empty_form.as_table }}
+        </table>
+    </div>
+    <script>
+        $('#add_more').click(function() {
+            var form_idx = $('#id_form-TOTAL_FORMS').val();
+            $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+            $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+        });
+    </script>
+
+    <div class="container">
+      <button type="submit" class="btn btn-primary">Show the results!</button>
+    </div>
+
+    <p>
+      {% if input_demo %}
+      {{ input_demo }}
+      {% endif %}
+    </p>
+
+    <p>
+     {% if output_demo %}
+     {{ output_demo }}
+     {% endif %}
+    </p>
+
+
+    {% if data %}
+    <ul>
+    {% for d in data %}
+      <li>{{ d }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</form>
+
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="{% static "/js/demo.js"%}"></script>
+
+{% endblock %}

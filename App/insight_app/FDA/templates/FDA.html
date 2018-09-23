@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load static %}
+{% block body_block %}
+
+<!-- The actual page starts here -->
+ <p>
+   {{ Message }}
+ </p>
+
+
+<form method="post">
+  <div class="form-group">
+    {% csrf_token %}
+    <!-- First form -->
+    <div id="form_set">
+      <table>
+        {{ form.as_table }}
+      </table>
+    <!-- Formset -->
+    {{ formset.management_form }}
+        {% for form in formset.forms %}
+            <table class='no_error'>
+                {{ form.as_table }}
+            </table>
+        {% endfor %}
+    </div>
+    <br>
+    <input type="button" value="Add Another Drug" id="add_more">
+    <div id="empty_form" style="display:none">
+        <table class='no_error'>
+            {{ formset.empty_form.as_table }}
+        </table>
+    </div>
+
+
+    <!-- Reaction Form -->
+    <br><br>
+    <div class="ui-widget">
+      <table>
+        {{ form_rxn.as_table }}
+      </table>
+    </div>
+
+    <br>
+    <!-- Button -->
+    <div class="container">
+      <button type="submit" class="btn btn-primary">Show the results!</button>
+    </div>
+  </div>
+</form>
+
+<!-- Outputs -->
+<div id = "outputs" class="container">
+  <!-- If you want to show converted inputs -->
+  <p>
+    {% if inputs %}
+    Converted inputs:
+    <ul>
+      {% for input in inputs %}
+      <li>{{ input }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </p>
+  <br>
+  {% if prob_output %}
+  If adverse reaction, probability of negative response
+  <ul>
+    {% for output,output_probs in prob_output %}
+    <li>{{ output }} at {{ output_probs }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+<div id = "recommendations" class="container">
+  <p>
+    {% if data %}
+    <ul>
+    {% for d in data %}
+      <li>{{ d }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+
+  {% if Recommendations %}
+    Features to avoid: <br>
+    <ul>
+      {% for recommendation in Recommendations %}
+      <li>{{ recommendation }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </p>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="{% static 'css/FDA.css' %}">
+
+<!-- Script for adding more forms -->
+
+
+
+<script type="text/javascript" >
+// Pass in the entries
+var gn_entries_string = unescape("{{ gn_entries_JSON | safe | escapejs }}");
+var gn_entries = JSON.parse(gn_entries_string);
+
+var ar_entries_string = unescape("{{ ar_entries_JSON | safe | escapejs }}");
+var ar_entries = JSON.parse(ar_entries_string);
+
+var di_entries_string = unescape("{{ di_entries_JSON | safe | escapejs }}");
+var di_entries = JSON.parse(di_entries_string);
+
+var rxn_entries_string = unescape("{{ rxn_entries_JSON | safe | escapejs }}");
+var rxn_entries = JSON.parse(rxn_entries_string);
+
+  // Autocomplete function
+  $( function fill_entries() {
+
+    $( '#gn_form' ).autocomplete({
+      source: gn_entries,
+      minLength: 3,
+    });
+    $( '#ar_form' ).autocomplete({
+      source: ar_entries,
+      minLength: 1,
+    });
+    $( '#di_form').autocomplete({
+      source: di_entries,
+      minLength: 3,
+    });
+    $( '#rxn_form' ).autocomplete({
+      source: rxn_entries,
+      minLength: 3,
+    });
+  });
+
+// add a form
+var count = 0
+$('#add_more').click(function() {
+   var form_idx = $('#id_form-TOTAL_FORMS').val();
+   $('#form_set').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
+   $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+   // rerun the auto-complete function
+   $( function fill_entries() {
+     for (i = 0; i <= count; i++){
+       gn_name = '[name = "form-' + i + '-generic_drug"]'
+       $(gn_name).autocomplete({
+         source: gn_entries,
+         minLength: 3,
+       });
+       ar_name = '[name = "form-' + i + '-admin_route"]'
+       $(ar_name).autocomplete({
+         source: ar_entries,
+         minLength: 1,
+       });
+       di_name = '[name = "form-' + i + '-drug_indication"]'
+       $(di_name).autocomplete({
+         source: di_entries,
+         minLength: 3,
+       });
+     }
+   count++
+   });
+});
+
+</script>
+
+{% endblock %}
