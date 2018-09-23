@@ -15,15 +15,15 @@ model_num = model_num[0]
 
 file_to_read = 'progress/modeling/df_ML_model_' + model_num + '.csv'
 
-save_all = False
+save_all = True
 
-save_models_RF = True
+save_models_RF = False
 model_filename_RF = './progress/modeling/RF_' + model_num + '_' # + [outcome].pkl
-save_models_LR = True
+save_models_LR = False
 model_filename_LR = './progress/modeling/LR_' + model_num + '_' # + [outcome].pkl
-save_models_NB = True
+save_models_NB = False
 model_filename_NB = './progress/modeling/NB_' + model_num + '_' # + [outcome].pkl
-save_models_KM = True
+save_models_KM = False
 model_filename_KM = './progress/modeling/KM_' + model_num + '_' # + [outcome].pkl
 
 save_results_RF = False
@@ -32,8 +32,6 @@ save_results_LR = False
 file_for_results_LR = 'progress/modeling/LR_' + model_num + '_results.csv'
 save_results_NB = False
 file_for_results_NB = 'progress/modeling/NB_' + model_num + '_results.csv'
-
-
 
 save_rf_lists = False
 file_for_rf_lists = 'progress/modeling/RF_' + model_num + '_rflist_' # + [outcome].pkl
@@ -194,6 +192,14 @@ for col in test_cols:
     elapsed = timeit.default_timer() - start_time
     print('Done with "{a}" in {b:0.2f} minutes.'.format(a = col, b = elapsed/60))
     print('\n')
+
+# Save the models
+if save_models_NB or save_all:
+    i = 0
+    for col in test_cols:
+        with open(model_filename_NB + col + '.pkl', "wb") as fp:   #Pickling
+            pickle.dump(NB_models[i], fp)
+        i = i + 1
 
 # Convert results to a nice df
 results = pd.DataFrame([NB_results[0], NB_results[1], NB_results[2], NB_results[3], NB_results[4]]).transpose()
