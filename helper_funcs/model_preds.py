@@ -6,6 +6,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.cluster import KMeans
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # modeling functions
 def RF_pred(df, test_col):

@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
 import pickle
+import timeit
 
 from helper_funcs.model_preds import RF_pred, LR_pred, NB_pred, cluster_models
+
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 
 # Set up filenames (have to run wrangling function first)
 model_num = ['X_1', 'X_2', 'X_3']
@@ -35,8 +40,11 @@ file_for_rf_lists = 'progress/modeling/RF_' + model_num + '_rflist_' # + [outcom
 
 
 # Read in the data from Wrangling
+print('Reading in the df...')
+start_time = timeit.default_timer()
 df = pd.read_csv(file_to_read, index_col = 0)
-
+elapsed = timeit.default_timer() - start_time
+print('Done in {a:0.2f} seconds.'.format(a = elapsed))
 
 ### RANDOM FOREST
 
@@ -52,7 +60,10 @@ RF_cm_train = []
 RF_cm_test = []
 RF_prfs_train = []
 RF_prfs_test = []
+print('Running the Random Forest Classifier')
 for col in test_cols:
+    start_time = timeit.default_timer()
+    print('Predicting "{}".'.format(col))
     RF, results, rf_list, cm_train, cm_test, prfs_train, prfs_test = RF_pred(df, col)
     RF_models.append(RF)
     RF_results.append(results)
@@ -61,7 +72,9 @@ for col in test_cols:
     RF_cm_test.append(cm_test)
     RF_prfs_train.append(prfs_train)
     RF_prfs_test.append(prfs_test)
-
+    elapsed = timeit.default_timer() - start_time
+    print('Done with "{a}" in {b:0.2f} minutes.'.format(a = col, b = elapsed/60))
+    print('\n')
 
 # Save the models
 if save_models_RF or save_all:
@@ -111,7 +124,10 @@ LR_cm_train = []
 LR_cm_test = []
 LR_prfs_train = []
 LR_prfs_test = []
+print('Running the Logistic Regression Classifier')
 for col in test_cols:
+    start_time = timeit.default_timer()
+    print('Predicting "{}".'.format(col))
     LR, results, cm_train, cm_test, prfs_train, prfs_test = LR_pred(df, col)
     LR_models.append(LR)
     LR_results.append(results)
@@ -120,6 +136,9 @@ for col in test_cols:
     LR_cm_test.append(cm_test)
     LR_prfs_train.append(prfs_train)
     LR_prfs_test.append(prfs_test)
+    elapsed = timeit.default_timer() - start_time
+    print('Done with "{a}" in {b:0.2f} minutes.'.format(a = col, b = elapsed/60))
+    print('\n')
 
 # Save the models
 if save_models_LR or save_all:
@@ -160,7 +179,10 @@ NB_cm_train = []
 NB_cm_test = []
 NB_prfs_train = []
 NB_prfs_test = []
+print('Running the Naive Bayes Classifier')
 for col in test_cols:
+    start_time = timeit.default_timer()
+    print('Predicting "{}".'.format(col))
     NB, results, cm_train, cm_test, prfs_train, prfs_test = NB_pred(df, col)
     NB_models.append(NB)
     NB_results.append(results)
@@ -169,6 +191,9 @@ for col in test_cols:
     NB_cm_test.append(cm_test)
     NB_prfs_train.append(prfs_train)
     NB_prfs_test.append(prfs_test)
+    elapsed = timeit.default_timer() - start_time
+    print('Done with "{a}" in {b:0.2f} minutes.'.format(a = col, b = elapsed/60))
+    print('\n')
 
 # Convert results to a nice df
 results = pd.DataFrame([NB_results[0], NB_results[1], NB_results[2], NB_results[3], NB_results[4]]).transpose()
@@ -194,9 +219,15 @@ test_cols = ['serious', 'seriousness_death',
               'seriousness_lifethreatening']
 
 KM_models = []
+print('Running the KMeans Clustering')
 for col in test_cols:
+    start_time = timeit.default_timer()
+    print('Predicting "{}".'.format(col))
     KM = cluster_models(df, col)
     KM_models.append(KM)
+    elapsed = timeit.default_timer() - start_time
+    print('Done with "{a}" in {b:0.2f} minutes.'.format(a = col, b = elapsed/60))
+    print('\n')
 
 # Save the models
 if save_models_KM or save_all:
@@ -205,3 +236,6 @@ if save_models_KM or save_all:
         with open(model_filename_KM + col + '.pkl', "wb") as fp:   #Pickling
             pickle.dump(KM_models[i], fp)
         i = i + 1
+
+
+print('Congratulations! You made it through the code!!')

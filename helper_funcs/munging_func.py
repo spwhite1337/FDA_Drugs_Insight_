@@ -2,7 +2,8 @@ import timeit
 import os
 import pandas as pd
 import numpy as np
-
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 def section_1(data_2, file_name):
     "year, quarter, authority_no, company_no, duplicate, expedited, occur_country"

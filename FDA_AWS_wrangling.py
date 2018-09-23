@@ -20,7 +20,8 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 import sklearn.cluster
 from Levenshtein import distance
-
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Make dirs
 if not os.path.exists('data'):
@@ -52,8 +53,6 @@ if not os.path.exists('progress/wrangled/percent_1'):
 jsonurl = 'https://api.fda.gov/download.json'
 with urllib.request.urlopen(jsonurl) as url:
     data = json.loads(url.read().decode())
-
-
 
 # Entries of downloadable files
 # 760 in total
@@ -137,7 +136,7 @@ file_name = []
 j = 0
 #for i in range(0,len(urls)): # This goes through all the data
 print('Progress...')
-for i in range(600,602):
+for i in range(601,602):
     start_time = timeit.default_timer()
     print('File {num} with size = {size} MB downloading...'.format(num = i, size = partitions[i]['size_mb']))
     url = urls[i] # Get the url
@@ -252,7 +251,8 @@ entries_len = []
 
 ### generic_name
 test_col = 'generic_name'
-print(df['generic_name'].head())
+print('Working on "{}"...'.format(test_col))
+start_time = timeit.default_timer()
 ### One-hot-encode with condensed input
 # Generate list of unique drugs
 unique_entries = unique_gen(test_col, df)
@@ -270,8 +270,6 @@ col_list_cond = [[x for y in entry for x in y] for entry in col_list_cond]
 # https://stackoverflow.com/questions/46864816/convert-data-frame-of-comma-separated-strings-to-one-hot-encoded
 print('One Hot Encoding...')
 df_tmp = pd.Series(col_list_cond).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
-print('Done.')
-
 
 # Save unique list of generic_names
 unique_entries_generic_name = unique_entries
@@ -285,12 +283,17 @@ if '' in list(df_tmp.columns):
 # start the final df
 entries_len.append(len(df_tmp.columns))
 df_ML = df_tmp.copy()
-
+elapsed = timeit.default_timer() - start_time
+print('Done with "{a}" in {b:0.2f} minutes.'.format(a = test_col, b = elapsed/60))
+print('\n')
 
 ### drug_char
 # one-hot-encode
-df_tmp = one_hot_encode_drugs('drug_char', df)
+test_col = 'drug_char'
+print('Working on "{}"...'.format(test_col))
+start_time = timeit.default_timer()
 
+df_tmp = one_hot_encode_drugs(test_col, df)
 
 # clean up
 df_tmp = df_tmp.drop(['Unknown'], axis = 1)
@@ -298,11 +301,14 @@ df_tmp = df_tmp.drop(['Unknown'], axis = 1)
 # join to the rest
 entries_len.append(len(df_tmp.columns))
 df_ML = pd.concat([df_ML, df_tmp], axis=1, join_axes=[df_ML.index])
-
+elapsed = timeit.default_timer() - start_time
+print('Done with "{a}" in {b:0.2f} minutes.'.format(a = test_col, b = elapsed/60))
+print('\n')
 
 ### drug_indication
 test_col = 'drug_indication'
-
+print('Working on "{}"...'.format(test_col))
+start_time = timeit.default_timer()
 ### One-hot-encode with condensed input
 # Generate list of unique drugs
 unique_entries = unique_gen(test_col, df)
@@ -320,8 +326,6 @@ col_list_cond = [[x for y in entry for x in y] for entry in col_list_cond]
 # https://stackoverflow.com/questions/46864816/convert-data-frame-of-comma-separated-strings-to-one-hot-encoded
 print('One Hot Encoding...')
 df_tmp = pd.Series(col_list_cond).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
-print('Done.')
-
 # Save unique list of drug indication
 unique_entries_drug_indication = unique_entries
 
@@ -333,11 +337,16 @@ if '' in list(df_tmp.columns):
 entries_len.append(len(df_tmp.columns))
 df_ML = pd.concat([df_ML, df_tmp], axis=1, join_axes=[df_ML.index])
 
+elapsed = timeit.default_timer() - start_time
+print('Done with "{a}" in {b:0.2f} minutes.'.format(a = test_col, b = elapsed/60))
+print('\n')
 
 ### Admin_route
-
+test_col = 'admin_route'
+print('Working on "{}"...'.format(test_col))
+start_time = timeit.default_timer()
 # one-hot-encode
-df_tmp = one_hot_encode_drugs('admin_route', df)
+df_tmp = one_hot_encode_drugs(test_col, df)
 
 # Clean up
 if 'Unknown' in list(df_tmp.columns):
@@ -349,10 +358,16 @@ if 'Not Listed' in list(df_tmp.columns):
 entries_len.append(len(df_tmp.columns))
 df_ML = pd.concat([df_ML, df_tmp], axis=1, join_axes=[df_ML.index])
 
-### reaction_medDRA
+elapsed = timeit.default_timer() - start_time
+print('Done with "{a}" in {b:0.2f} minutes.'.format(a = test_col, b = elapsed/60))
+print('\n')
 
+### reaction_medDRA
+test_col = 'reaction_medDRA_pt'
+print('Working on "{}"...'.format(test_col))
+start_time = timeit.default_timer()
 # Convert df column to a list
-col_list = entries_col_to_lists('reaction_medDRA_pt', df)
+col_list = entries_col_to_lists(test_col, df)
 # To HLT
 col_list_HLT = [[[dict_PT_HLT[l1] for l1 in l2 if l1 in dict_PT_HLT.keys()] for l2 in l3] for l3 in col_list]
 # To HLGT
@@ -380,7 +395,7 @@ else:
 # https://stackoverflow.com/questions/46864816/convert-data-frame-of-comma-separated-strings-to-one-hot-encoded
 print('One Hot Encoding...')
 df_tmp = pd.Series(col_list_ML).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
-print('Done.')
+
 
 # clean up
 if '' in list(df_tmp.columns):
@@ -389,9 +404,12 @@ if '' in list(df_tmp.columns):
 # joing to the rest
 entries_len.append(len(df_tmp.columns))
 df_ML = pd.concat([df_ML, df_tmp], axis=1, join_axes=[df_ML.index])
-
+elapsed = timeit.default_timer() - start_time
+print('Done with "{a}" in {b:0.2f} minutes.'.format(a = test_col, b = elapsed/60))
+print('\n')
 
 # Add in the outcome variables
+print('Adding in the outcome variables.')
 df_outcomes = df[['serious', 'seriousness_congential_anomali',
          'seriousness_death', 'seriousness_disabling', 'seriousness_hospitalization',
          'seriousness_lifethreatening', 'seriousness_other']]
@@ -401,7 +419,7 @@ df_ML = pd.concat([df_ML, df_outcomes], axis = 1, join_axes = [df_ML.index])
 # Convert all columns to numeric
 df_ML = df_ML.apply(pd.to_numeric)
 df_ML['serious'] = df_ML['serious'] - 1
-
+print('Saving the files.')
 # Save as a csv
 if save_df or save_all:
     df_ML_filename = './progress/modeling/df_ML_model_' + model_num + '.csv'
@@ -430,3 +448,6 @@ if save_unique_gn or save_all:
 if save_unique_di or save_all:
     with open("./progress/modeling/unique_drug_indication.txt", "wb") as fp:
         pickle.dump(unique_entries_drug_indication, fp)
+
+print('\n')
+print("Congratulations! You made it through the code!")

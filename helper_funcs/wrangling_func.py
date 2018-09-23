@@ -8,6 +8,9 @@ import pickle
 import sklearn.cluster
 from Levenshtein import distance
 
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning) 
+
 # drug_char dict
 drug_char_dict = {'1':'Suspect', '2':'Concominant', '3': 'Interacting', '':'Unknown'}
 # admin_route dict
