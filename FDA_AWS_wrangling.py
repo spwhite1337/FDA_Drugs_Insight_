@@ -355,10 +355,10 @@ if model_num == "X_1":
 elif model_num == "X_2":
     col_list_ML = [[x for y in entry for x in y] for entry in col_list_HLGT]
 # For HLT
-elif model_num = "X_3":
+elif model_num == "X_3":
     col_list_ML = [[x for y in entry for x in y] for entry in col_list_HLT]
 # For PT
-elif model_num = "X_4":
+elif model_num == "X_4":
     col_list_ML = [[x for y in entry for x in y] for entry in col_list]
 else:
     col_list_ML = [[x for y in entry for x in y] for entry in col_list_SOC]
