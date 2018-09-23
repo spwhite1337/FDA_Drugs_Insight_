@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 import timeit
 import os
 import pickle
+
+import sklearn.cluster
+from Levenshtein import distance
 
 # drug_char dict
 drug_char_dict = {'1':'Suspect', '2':'Concominant', '3': 'Interacting', '':'Unknown'}
@@ -319,8 +319,7 @@ def one_hot_encode_drugs(test_col, df):
 
 
 
-import sklearn.cluster
-from Levenshtein import distance
+
 
 def entry_condenser(unique_col, char_lim = None):
     """
@@ -336,7 +335,7 @@ def entry_condenser(unique_col, char_lim = None):
         words = words_og
 
     # Get similarity matrix
-    words = np.asarray(words) 
+    words = np.asarray(words)
     lev_similarity = -1*np.array([[distance(w1,w2) for w1 in words] for w2 in words])
 
     # Fit an affinity model
@@ -353,7 +352,7 @@ def entry_condenser(unique_col, char_lim = None):
         for name in cluster:
             cluster_list.append(exemplar)
             gen_name_list.append(name)
-            
+
     gen_name_dict = dict(zip(gen_name_list, cluster_list))
-    
+
     return gen_name_dict
