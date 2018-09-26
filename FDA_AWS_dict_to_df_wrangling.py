@@ -12,14 +12,14 @@ import pickle
 import pandas as pd
 import numpy as np
 
-
+print('Loading in the data...')
 # General
 with open("./progress/file_name.txt", "rb") as fp:   # Unpickling
     file_name = pickle.load(fp)
 # General
 with open("./progress/data_2.txt", "rb") as fp:   # Unpickling
     data_2 = pickle.load(fp)
-
+print('Done.')
 
 # Select the files to save
 model_num = ['X_1', 'X_2', 'X_3']
