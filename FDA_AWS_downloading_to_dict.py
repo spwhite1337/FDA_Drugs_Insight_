@@ -194,32 +194,9 @@ print('Number of files = {}'.format(len(file_name)))
 print('data_2 is a {} where entries of data_2[0][\'results\'][0] are {}'.format(type_file, type_entry))
 print('Approximate Size of packed file is {size:.2f} MB'.format(size = size/10**6))
 
-# Select the files to save
-model_num = ['X_1', 'X_2', 'X_3']
-model_num = model_num[0]
-save_all = True # save all the relevant files
-save_df = False
-save_entries = False
-save_entries_len = False
-save_unique_gn = False
-save_unique_di = False
-
-
-### 2. CONVERT TO A DATAFRAME
-
-from helper_funcs.munging_func import section_1, section_2, section_3, section_4, section_5, section_6, section_7
-
-
-df_1 = section_1(data_2, file_name)
-df_2 = section_2(data_2)
-df_3 = section_3(data_2)
-df_4 = section_4(data_2)
-df_5 = section_5(data_2)
-df_6 = section_6(data_2)
-df_7 = section_7(data_2)
-
-df = df_1.join(df_2).join(df_3).join(df_4).join(df_5).join(df_6).join(df_7)
-
-print('Saving dfs...')
-df.to_csv('./progress/modeling/df_extracted.csv')
-print('Saved, congrats!')
+# General
+with open("./progress/data_2.txt", "wb") as fp:   #Pickling
+    pickle.dump(data_2, fp)
+# General, filenames used in a general set of records
+with open("./progress/file_name.txt", "wb") as fp:   #Pickling
+    pickle.dump(file_name, fp)
