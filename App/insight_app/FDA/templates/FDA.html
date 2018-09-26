@@ -5,110 +5,492 @@
 {% block body_block %}
 
 <!-- The actual page starts here -->
- <p>
-   {{ Message }}
- </p>
+<div id = "intro_div" class="container">
+  <h2 id= "intro_title">
+    {{ Message1 }}<br>
+    {{ Message2 }}
+  </h2>
+  <hr>
+  <img id = "insight_logo" src="{% static 'images/logo-square.png' %}" alt="">
+  <p id = "intro_abstract">
+    The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and the actions they are taking for their health.
+  </p>
+  <hr>
+</div>
 
-
-<form method="post">
-  <div class="form-group">
-    {% csrf_token %}
-    <!-- First form -->
-    <div id="form_set">
-      <table>
-        {{ form.as_table }}
-      </table>
-    <!-- Formset -->
-    {{ formset.management_form }}
-        {% for form in formset.forms %}
-            <table class='no_error'>
-                {{ form.as_table }}
-            </table>
-        {% endfor %}
-    </div>
-    <br>
-    <input type="button" value="Add Another Drug" id="add_more">
-    <div id="empty_form" style="display:none">
-        <table class='no_error'>
-            {{ formset.empty_form.as_table }}
+<div id="form_div"class="container">
+  <form method="post">
+    <div class="form-group">
+      {% csrf_token %}
+      <!-- First form -->
+      <div id="form_set">
+        <table>
+          {{ form.as_p }}
         </table>
-    </div>
+      <!-- Formset -->
+      {{ formset.management_form }}
+          {% for form in formset.forms %}
+            {{ form.label }}
+              <table class='no_error'>
+                  {{ form.as_p }}
+              </table>
+          {% endfor %}
+      </div>
+      <br>
+      <input type="button" value="Add Another Drug" id="add_more">
+      <div id="empty_form" style="display:none">
+        <hr>
+          <table class='no_error'>
+              {{ formset.empty_form.as_p }}
+          </table>
+      </div>
 
 
-    <!-- Reaction Form -->
-    <br><br>
-    <div class="ui-widget">
-      <table>
-        {{ form_rxn.as_table }}
-      </table>
+      <!-- Reaction Form -->
+      <br><br>
+      <div id="form_set">
+        <div class="ui-widget">
+          <table>
+            {{ form_rxn.as_p }}
+          </table>
+        </div>
+      </div>
+      <br>
+      <!-- Button -->
+      <div id="FDA_button_div"  class="container">
+        <button id = "FDA_button" type="submit" class="btn btn-primary">Show the results!</button>
+      </div>
     </div>
-
-    <br>
-    <!-- Button -->
-    <div class="container">
-      <button type="submit" class="btn btn-primary">Show the results!</button>
-    </div>
-  </div>
-</form>
+      <!-- Button -->
+  </form>
+</div>
+<!-- For the loading icon -->
+<div class="result"></div>
+<div id = "wait" class="loader"></div>
 
 <!-- Outputs -->
-<div id = "outputs" class="container">
-  <!-- If you want to show converted inputs -->
+{% if results %}
+<div id = "button_div_inputs">
+  <button id = "inputs_button" type="button" class="btn-sm"><span id = "button_text_inputs">Check Inputs</span></button>
+</div>
+<!-- If you want to show converted inputs -->
+<div id = "converted_inputs">
   <p>
-    {% if inputs %}
-    Converted inputs:
-    <ul>
-      {% for input in inputs %}
-      <li>{{ input }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+      {% if input_gn %}
+      <span id = "input_name">Generic Drug Names</span>:
+      <ul>
+        {% for input in input_gn %}
+        <li>{{ input }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if input_ar %}
+      <span id = "input_name">Administration Routes:</span>
+      <ul>
+        {% for input in input_ar %}
+        <li>{{ input }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if input_di %}
+      <span id = "input_name">Reasons for the Drugs:</span>
+      <ul>
+        {% for input in input_di %}
+        <li>{{ input }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if input_rxn %}
+      <span id = "input_name">Concerning Reaction:</span>
+      <ul>
+        {% for input in input_rxn %}
+        <li>{{ input }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
   </p>
-  <br>
-  {% if prob_output %}
-  If adverse reaction, probability of negative response
-  <ul>
-    {% for output,output_probs in prob_output %}
-    <li>{{ output }} at {{ output_probs }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
 </div>
 
+<!-- Likelihoods -->
+<div id = "Likelihoods">
+<h3 id = "Likelihoods_title">Likelihood Estimates</h3>
+If you happen to have an adverse reaction from the drugs you're taking, here are the chances it will (i) be designated as serious, (ii) result in death, (iii) leave you disabled, (iv) result in hospitalization, (v) be Life-Threatening.<br><br>
+<!-- serious -->
+  {% if serious_good %}
+      Serious (General): {{ serious_good }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_good }}%">
+            <font id = "prob_output">{{ serious_good }}</font>
+          </div>
+     </div>
+  {% elif serious_ok %}
+      Serious (General): {{ serious_ok }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_ok }}%">
+            <font id = "prob_output">{{ serious_ok }}</font>
+          </div>
+     </div>
+  {% elif serious_bad %}
+      Serious (General): {{ serious_bad }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_bad }}%">
+            <font id = "prob_output">{{ serious_bad }}</font>
+          </div>
+     </div>
+  {% else %}
+      <li>Virtually no risk of a serious outcome.</li><br><br>
+  {% endif %}
+
+<!-- death -->
+  {% if death_good %}
+     Death: {{ death_good }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_good }}%">
+            <font id = "prob_output">{{ death_good }}</font>
+          </div>
+     </div>
+  {% elif death_ok %}
+      Death: {{ death_ok }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_ok }}%">
+            <font id = "prob_output">{{ death_ok }}</font>
+          </div>
+     </div>
+  {% elif death_bad %}
+      Death: {{ death_bad }}%
+      <div class="progress">
+          <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_bad }}%">
+            <font id = "prob_output">{{ death_bad }}</font>
+          </div>
+     </div>
+  {% else %}
+      <li>Virtually no risk of death.</li><br><br>
+  {% endif %}
+
+  <!-- disabling -->
+    {% if disabling_good %}
+      Disabling: {{ disabling_good }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ disabling_good }}%">
+              <font id = "prob_output">{{ disabling_good }}</font>
+            </div>
+       </div>
+    {% elif disabling_ok %}
+       Disabling: {{ disabling_ok }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ disabling_ok }}%">
+              <font id = "prob_output">{{ disabling_ok }}</font>
+            </div>
+       </div>
+    {% elif disabling_bad %}
+       Disabling: {{ disabling_bad }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ disabling_bad }}%">
+              <font id = "prob_output">{{ disabling_bad }}</font>
+            </div>
+       </div>
+    {% else %}
+        <li>Virtually no risk of a disabling reaction.</li><br><br>
+    {% endif %}
+
+    <!-- hospital -->
+      {% if hospital_good %}
+          Hospitalization: {{ hospital_good }}%
+          <div class="progress">
+              <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_good }}%">
+                <font id = "prob_output">{{ hospital_good }}</font>
+              </div>
+         </div>
+      {% elif hospital_ok %}
+          Hospitalization: {{ hospital_ok }}%
+          <div class="progress">
+              <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="200"
+              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_ok }}%">
+                <font id = "prob_output">{{ hospital_ok }}</font>
+              </div>
+         </div>
+      {% elif hospital_bad %}
+          Hospitalization: {{ hospital_bad }}%
+          <div class="progress">
+              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="200"
+              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_bad }}%">
+                <font id = "prob_output">{{ hospital_bad }}</font>
+              </div>
+         </div>
+      {% else %}
+          <li>Virtually no risk of Hospitalization.</li> <br><br>
+      {% endif %}
+
+      <!-- LT -->
+        {% if lifethreatening_good %}
+            Life-Threatening: {{ lifethreatening_good }}%
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="200"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_good }}%">
+                  <font id = "prob_output">{{ lifethreatening_good }}</font>
+                </div>
+           </div>
+        {% elif lifethreatening_ok %}
+          Life-Threatening: {{ lifethreatening_ok }}%
+            <div class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="200"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_ok }}%">
+                  <font id = "prob_output">{{ lifethreatening_ok }}</font>
+                </div>
+           </div>
+        {% elif lifethreatening_bad %}
+          Life-Threatening: {{ lifethreatening_good }}%
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="200"
+                aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_bad }}%">
+                  <font id = "prob_output">{{ lifethreatening_bad }}</font>
+                </div>
+           </div>
+        {% else %}
+          <li>Virtually no risk of life threatening reaction.</li> <br>
+        {% endif %}
+
+</div>
+
+<!-- Recommendation Button -->
+<div id = "button_div_recomm">
+  <button id = "recomm_button" type="button" class="btn btn-primary"><span id = "button_text_recomm">
+    Show Recommendations</span></button>
+</div>
+
+<!-- Recommendation Div -->
 <div id = "recommendations" class="container">
-  <p>
-    {% if data %}
-    <ul>
-    {% for d in data %}
-      <li>{{ d }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+  <h3 id = "recomm_title">Actions to Avoid</h3>
+  <hr>
+  <p id = "recomm_desc">
+    Considering the patients who had serious outcomes, the important differences between them and you are highlighted below. Interpret these as "items to avoid" if you can. Talk to your doctor about ways to prevent them or alternative treatments.
+    <br><br>
+    For Serious (General)
+  </p>
+    <!-- Buttons for Recommendations -->
+      <div class="btn-group">
+          <button id="serious_button" type="button" class="btn btn-lg btn-primary">Serious (General)</button>
+          <button id="death_button" type="button" class="btn btn-lg btn-primary">Death</button>
+          <button id="disabling_button" type="button" class="btn btn-lg btn-primary">Disabling</button>
+          <button id="hospital_button" type="button" class="btn btn-lg btn-primary">Hospitalization</button>
+          <button id="lifethreatening_button" type="button" class="btn btn-lg btn-primary">Life-Threatening</button>
+      </div>
+    <!-- recommendations for serious -->
+    <div id = "recomm_serious">
+        <!-- Print the recommendations -->
+        {% if di_recomm %}
+        <div id = "di_div" class="container">
+              The symptoms leading to drug use: <br>
+              <ul>
+                {% for recommendation in di_recomm %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+        {% if gn_recomm %}
+          <div id = "gn_div" class = "container">
+                The drugs they took: <br>
+                <ul>
+                  {% for recommendation in gn_recomm %}
+                  <li>{{ recommendation }}</li>
+                  {% endfor %}
+                </ul>
+          </div>
+          {% endif %}
 
+          {% if rxn_recomm %}
+          <div id = "rxn_div" class="container">
+                The reactions that directly caused their serious outcome: <br>
+                  <ul>
+                    {% for recommendation in rxn_recomm %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                  </ul>
+          </div>
+          {% endif %}
+    </div>
+    <!-- recommendations for Death -->
+    <div id = "recomm_death">
+        <!-- Print the recommendations -->
+        {% if di_recomm %}
+        <div id = "di_div" class="container">
+              The symptoms leading to drug use: <br>
+              <ul>
+                {% for recommendation in di_recomm %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+        {% if gn_recomm %}
+          <div id = "gn_div" class = "container">
+                The drugs they took: <br>
+                <ul>
+                  {% for recommendation in gn_recomm %}
+                  <li>{{ recommendation }}</li>
+                  {% endfor %}
+                </ul>
+          </div>
+          {% endif %}
 
-  {% if Recommendations %}
-    Features to avoid: <br>
-    <ul>
-      {% for recommendation in Recommendations %}
-      <li>{{ recommendation }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+          {% if rxn_recomm %}
+          <div id = "rxn_div" class="container">
+                The reactions that directly caused their serious outcome: <br>
+                  <ul>
+                    {% for recommendation in rxn_recomm %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                  </ul>
+          </div>
+          {% endif %}
+    </div>
+    <!-- recommendations for Disabling -->
+    <div id = "recomm_disabling">
+        <!-- Print the recommendations -->
+        {% if di_recomm %}
+        <div id = "di_div" class="container">
+              The symptoms leading to drug use: <br>
+              <ul>
+                {% for recommendation in di_recomm %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+        {% if gn_recomm %}
+          <div id = "gn_div" class = "container">
+                The drugs they took: <br>
+                <ul>
+                  {% for recommendation in gn_recomm %}
+                  <li>{{ recommendation }}</li>
+                  {% endfor %}
+                </ul>
+          </div>
+          {% endif %}
+
+          {% if rxn_recomm %}
+          <div id = "rxn_div" class="container">
+                The reactions that directly caused their serious outcome: <br>
+                  <ul>
+                    {% for recommendation in rxn_recomm %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                  </ul>
+          </div>
+          {% endif %}
+    </div>
+    <!-- recommendations for Hospitalization -->
+    <div id = "recomm_hospital">
+        <!-- Print the recommendations -->
+        {% if di_recomm %}
+        <div id = "di_div" class="container">
+              The symptoms leading to drug use: <br>
+              <ul>
+                {% for recommendation in di_recomm %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+        {% if gn_recomm %}
+          <div id = "gn_div" class = "container">
+                The drugs they took: <br>
+                <ul>
+                  {% for recommendation in gn_recomm %}
+                  <li>{{ recommendation }}</li>
+                  {% endfor %}
+                </ul>
+          </div>
+          {% endif %}
+
+          {% if rxn_recomm %}
+          <div id = "rxn_div" class="container">
+                The reactions that directly caused their serious outcome: <br>
+                  <ul>
+                    {% for recommendation in rxn_recomm %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                  </ul>
+          </div>
+          {% endif %}
+    </div>
+    <!-- recommendations for Life Threatening -->
+    <div id = "recomm_lifethreatening">
+        <!-- Print the recommendations -->
+        {% if di_recomm %}
+        <div id = "di_div" class="container">
+              The symptoms leading to drug use: <br>
+              <ul>
+                {% for recommendation in di_recomm %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+        {% if gn_recomm %}
+          <div id = "gn_div" class = "container">
+                The drugs they took: <br>
+                <ul>
+                  {% for recommendation in gn_recomm %}
+                  <li>{{ recommendation }}</li>
+                  {% endfor %}
+                </ul>
+          </div>
+          {% endif %}
+
+          {% if rxn_recomm %}
+          <div id = "rxn_div" class="container">
+                The reactions that directly caused their serious outcome: <br>
+                  <ul>
+                    {% for recommendation in rxn_recomm %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                  </ul>
+          </div>
+          {% endif %}
+    </div>
+
+  <p id = "recomm_foot">
+    Going forward, keep an eye out for these characteristics and talk to your doctor or health professional about mitigating pathways to take preemptive action.
   </p>
 </div>
+{% endif %}
 
+<hr>
+
+<!-- Check Under the Hood -->
+<div id = "button_div_hood">
+  <button id = "hood_button" type="button" class="btn-lg"><span id = "button_text_hood">
+    Check Under the Hood</span></button>
+</div>
+
+<div id = "under_the_hood" class="containers">
+  <p>this is under the hood</p>
+</div>
 
 <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="{% static 'css/FDA.css' %}">
-
-<!-- Script for adding more forms -->
-
-
-
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <script type="text/javascript" >
+// JS for adding in more forms
 // Pass in the entries
 var gn_entries_string = unescape("{{ gn_entries_JSON | safe | escapejs }}");
 var gn_entries = JSON.parse(gn_entries_string);
@@ -170,6 +552,161 @@ $('#add_more').click(function() {
      }
    count++
    });
+});
+
+// For the inputs
+$('#inputs_button').click(function() {
+     var x = $('#converted_inputs');
+     var y = $('#button_text')
+     if (x.css('display') === "none") {
+		x.show();
+		y.text('Hide Inputs');
+     }
+	 else {
+		x.hide();
+    y.text('Show Inputs');
+}
+});
+
+//  For the recommendation button
+$('#recomm_button').click(function() {
+     var x = $('#recommendations');
+     var y = $('#button_text_recomm')
+     if (x.css('display') === "none") {
+		x.show();
+		y.text('Hide Recommendations');
+     }
+	 else {
+		x.hide();
+    y.text('Show Recommendations');
+}
+});
+
+// For recommendation button group
+$('#serious_button').click(function() {
+     var x1 = $('#recomm_serious');
+     var x2 = $('#recomm_death');
+     var x3 = $('#recomm_disabling');
+     var x4 = $('#recomm_hospital');
+     var x5 = $('#recomm_lifethreatening');
+
+     if (x1.css('display') === "none") {
+		x1.show();
+    x2.hide();
+    x3.hide();
+    x4.hide();
+    x5.hide();
+     }
+	 else {
+		x1.hide();
+}
+});
+
+$('#death_button').click(function() {
+     var x1 = $('#recomm_death');
+     var x2 = $('#recomm_serious');
+     var x3 = $('#recomm_disabling');
+     var x4 = $('#recomm_hospital');
+     var x5 = $('#recomm_lifethreatening');
+
+     if (x1.css('display') === "none") {
+		x1.show();
+    x2.hide();
+    x3.hide();
+    x4.hide();
+    x5.hide();
+     }
+	 else {
+		x1.hide();
+}
+});
+
+$('#disabling_button').click(function() {
+     var x1 = $('#recomm_disabling');
+     var x2 = $('#recomm_serious');
+     var x3 = $('#recomm_death');
+     var x4 = $('#recomm_hospital');
+     var x5 = $('#recomm_lifethreatening');
+
+     if (x1.css('display') === "none") {
+		x1.show();
+    x2.hide();
+    x3.hide();
+    x4.hide();
+    x5.hide();
+     }
+	 else {
+		x1.hide();
+}
+});
+
+$('#hospital_button').click(function() {
+     var x1 = $('#recomm_hospital');
+     var x2 = $('#recomm_serious');
+     var x3 = $('#recomm_death');
+     var x4 = $('#recomm_disabling');
+     var x5 = $('#recomm_lifethreatening');
+
+     if (x1.css('display') === "none") {
+		x1.show();
+    x2.hide();
+    x3.hide();
+    x4.hide();
+    x5.hide();
+     }
+	 else {
+		x1.hide();
+}
+});
+
+$('#lifethreatening_button').click(function() {
+     var x1 = $('#recomm_lifethreatening');
+     var x2 = $('#recomm_serious');
+     var x3 = $('#recomm_death');
+     var x4 = $('#recomm_disabling');
+     var x5 = $('#recomm_hospital');
+
+     if (x1.css('display') === "none") {
+		x1.show();
+    x2.hide();
+    x3.hide();
+    x4.hide();
+    x5.hide();
+     }
+	 else {
+		x1.hide();
+}
+});
+
+
+// For Under the Hood
+$('#hood_button').click(function() {
+     var x = $('#under_the_hood');
+     var y = $('#button_text_hood')
+     if (x.css('display') === "none") {
+		x.show();
+		y.text('Close the Hood');
+     }
+	 else {
+		x.hide();
+    y.text('Check Under the Hood');
+}
+});
+
+//  for the loading icon
+$( document ).ajaxStart(function() {
+  $("#wait").show();
+  $("#Likelihoods").hide();
+  $("#recommendations").hide();
+  $("#button_div_inputs").hide();
+  $("#button_div_recomm").hide();
+  $("#button_div_hood").hide();
+  $("#converted_inputs").hide();
+
+});
+
+$( "#FDA_button" ).click(function() {
+  $( ".result" ).load( "ajax/test.html" );
 });
 
 </script>

@@ -1,7 +1,291 @@
-#outputs {
+
+#intro_div {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.form-group {
+  width: 70%;
+  margin-left: 10%;
+  margin-right: 20%;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    background-color: rgb(200,200,200); /* Modern Browsers */
+}
+#intro_title {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 3em;
+}
+
+#insight_logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10vh;
+  /* box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19); */
+}
+#intro_abstract {
+  padding: 2%;
+  font-size: 1.5em;
+}
+#add_more {
+  box-shadow: 0 0.25em 0.2em 0 rgba(0, 0, 0, 0.2), 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.19);
+  font-size:1.1em;
+  height: 2.0em;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-left: 10%;
+}
+
+#form-form_div {
+  width:100%;
+  margin-left: 15%;
+}
+
+#form_set {
+  border: solid 0.02em silver;
+  padding: 2%;
+  box-shadow: 0 0.25em 0.2em 0 rgba(0, 0, 0, 0.2), 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.19);
+  font-size: 1.5em;
+  width: 90%;
+  margin-left: 10%;
+}
+
+#FDA_button_div {
+  width:100%
+}
+#FDA_button {
+  width: 40%;
+  margin-left:30%;
+  margin-bottom: 0.5em;
+  box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19);
+  font-size: 1.5em;
+}
+
+#wait {
+  display: none;
+}
+
+.loader {
+    border: 1.5em solid #4363F7; /* orange-red */
+    border-top: 1.5em solid lightblue;
+    border-bottom: 1.5em solid lightblue;
+    border-radius: 50%;
+    width: 10em;
+    height: 10em;
+    margin-left: 30%;
+    margin-top: 5em;
+    margin-bottom: 5em;
+    animation: spin 2s linear infinite;
+}
+
+#button_div_inputs {
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+
+#inputs_button {
+  width: 30%;
+  margin-left: 31%;
+}
+#button_text_inputs {
+  font-size: 1.5em;
+}
+
+#converted_inputs {
+  text-align: center;
+  margin: 3%;
+  margin-left: 20%;
+  margin-top: 1em;
+  padding: 1%;
+  width: 50%;
+  border: dashed silver 0.1em;
+  border-radius: 0.1em;
+  box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19);
+  display: none;
+}
+
+#converted_inputs ul{
+  list-style: none;
+  list-style-position: inside;
+}
+#converted_inputs h2{
+
+}
+
+#input_name {
+  font-size: 1.5em;
+}
+
+.progress {
+  height: 5vh;
+}
+
+#Likelihoods_title {
   font-size: 2em;
 }
 
+#Likelihoods {
+  width: 90%;
+  margin-left: 5%;
+  margin-bottom: 3em;
+  padding: 3%;
+  padding-top: 1%;
+  border-radius: 1em;
+  border: solid silver 0.1em;
+  box-shadow: 0 1.0em 0.8em 0 rgba(0, 0, 0, 0.2), 0 1.0em 2.0em 0 rgba(0, 0, 0, 0.19);
+  font-size: 1.5em;
+}
+
+#button_div_recomm {
+  width: 70%;
+  margin-left: 10%;
+  margin-bottom: 2em;
+}
+
+#recomm_button {
+  width: 40%;
+  margin-left:0%;
+  margin-bottom: 0.5em;
+  box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19);
+
+}
+
+#button_text_recomm {
+  font-size: 1.5em;
+}
+
 #recommendations {
+  border-radius: 2em;
+  border: solid black 0.05em;
+  background-color: rgba(109, 215, 252, 0.25);
+  box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19);
+  padding: 2%;
+  width: 90%;
+  margin: 1%;
+  margin-left: 5%;
+  margin-bottom: 1.0em;
+  display: none;
+}
+
+#button_div_recomm {
+  width:100%;
+}
+
+#recomm_button {
+  width: 40%;
+  margin-left: 16%;
+}
+
+#recomm_title {
+  text-align: center;
   font-size: 2em;
+}
+
+#recomm_desc {
+  text-align: justify;
+  font-size: 1em;
+  padding: 2%;
+}
+
+.btn-group {
+  width: 90%;
+  margin-left: 15%;
+
+}
+
+#recomm_serious {
+  display: none;
+}
+#recomm_death {
+  display: none;
+}
+#recomm_disabling {
+  display: none;
+}
+#recomm_hospital {
+  display: none;
+}
+#recomm_lifethreatening {
+  display: none;
+}
+
+
+#di_div {
+  border-radius: 0.01em;
+  border: dashed black 0.05em;
+  padding: 2%;
+  width: 90%;
+  margin: 1%;
+  margin-left: 5%;
+  margin-bottom: 0%;
+  background-color: rgba(240, 240, 240, 1.0);
+}
+#di_div:hover {
+  background-color: rgba(220, 220, 220, 1.0);
+}
+#gn_div {
+  border-radius: 0.01em;
+  border: dashed black 0.05em;
+  padding: 2%;
+  width: 90%;
+  margin: 1%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  margin-left: 5%;
+  background-color: rgba(240, 240, 240, 1.0);
+}
+#gn_div:hover {
+  background-color: rgba(220, 220, 220, 1.0);
+}
+#rxn_div {
+  border-radius: 0.01em;
+  border: dashed black 0.05em;
+  padding: 2%;
+  width: 90%;
+  margin: 1%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+  margin-left: 5%;
+  background-color: rgba(240, 240, 240, 1.0);
+}
+#rxn_div:hover {
+  background-color: rgba(220, 220, 220, 1.0);
+}
+
+#recomm_foot {
+  text-align: justify;
+  font-size: 1em;
+  padding: 2%;
+}
+
+#button_div_hood {
+  width: 100%;
+}
+
+#hood_button {
+  width: 40%;
+  margin-left: 26%;
+  margin-bottom: 2em;
+}
+
+#button_text_hood {
+  font-size: 1.0em;
+}
+
+#under_the_hood {
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 2em;
+  padding: 2%;
+  font-size: 1.0em;
+  background-color: rgba(220,220,220,1.0);
+  border: solid black 0.05em;
+  border-radius: 0.05em;
+  display: none;
 }

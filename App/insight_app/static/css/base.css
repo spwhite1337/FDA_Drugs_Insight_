@@ -1,0 +1,41 @@
+html, body {
+    height: 100%;
+    background-color: rgb(220,220,220);
+}
+
+html {
+    display: table;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    border: solid 0.02em black;
+    box-shadow: 0 0.5em 0.4em 0 rgba(0, 0, 0, 0.2), 0 0.5em 1.0em 0 rgba(0, 0, 0, 0.19);
+}
+
+footer ul {
+    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+    color: black;
+    padding: 0.3em;
+    list-style: none;
+    font-weight: bold;
+}
+
+footer ul li {
+    display: inline;
+    margin-left: 3%;
+}
+
+footer {
+    border-top: 0.1em solid #d5d5d5;
+    font-size: 1.0em;
+}
+
+footer a {
+    text-decoration: none;
+    color: #999;
+}

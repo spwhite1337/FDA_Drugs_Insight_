@@ -366,36 +366,29 @@ print('\n')
 test_col = 'reaction_medDRA_pt'
 print('Working on "{}"...'.format(test_col))
 start_time = timeit.default_timer()
-# Convert df column to a list
-col_list = entries_col_to_lists(test_col, df)
-# To HLT
-col_list_HLT = [[[dict_PT_HLT[l1] for l1 in l2 if l1 in dict_PT_HLT.keys()] for l2 in l3] for l3 in col_list]
-# To HLGT
-col_list_HLGT = [[[dict_HLT_HLGT[l1] for l1 in l2 if l1 in dict_HLT_HLGT.keys()] for l2 in l3] for l3 in col_list_HLT]
-# To SOC
-col_list_SOC = [[[dict_HLGT_SOC[l1] for l1 in l2 if l1 in dict_HLGT_SOC.keys()] for l2 in l3] for l3 in col_list_HLGT]
 
+### One-hot-encode with condensed input
+# Generate list of unique drugs
+unique_entries = unique_gen(test_col, df)
+# Condense this list to a lower dimensional space
+cond_dict = entry_condenser(unique_entries, 25)
+# Get raw columns as a nested list
+col_as_list = entries_col_to_lists(test_col, df)
+# Convert raw column to lower-d space
+col_list_cond = [[[cond_dict[l1] for l1 in l2 if l1 in cond_dict.keys()] for l2 in l3] for l3 in col_as_list]
+# Unnest the lowest list
+col_list_cond = [[x for y in entry for x in y] for entry in col_list_cond]
 
-# For SOC
-if model_num == "X_1":
-    col_list_ML = [[x for y in entry for x in y] for entry in col_list_SOC]
-# For HLGT
-elif model_num == "X_2":
-    col_list_ML = [[x for y in entry for x in y] for entry in col_list_HLGT]
-# For HLT
-elif model_num == "X_3":
-    col_list_ML = [[x for y in entry for x in y] for entry in col_list_HLT]
-# For PT
-elif model_num == "X_4":
-    col_list_ML = [[x for y in entry for x in y] for entry in col_list]
-else:
-    col_list_ML = [[x for y in entry for x in y] for entry in col_list_SOC]
 # One hot encoder
 # For more information, see the following link:
 # https://stackoverflow.com/questions/46864816/convert-data-frame-of-comma-separated-strings-to-one-hot-encoded
 print('One Hot Encoding...')
-df_tmp = pd.Series(col_list_ML).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
+if model_num == "X_1":
+    df_tmp = pd.Series(col_list_cond).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
 
+if model_num == "X_3":
+    col_as_list = [[x for y in entry for x in y] for entry in col_as_list]
+    df_tmp = pd.Series(col_as_list).str.join(',').str.split(',',expand = True).apply(pd.Series.value_counts, 1).iloc[:,:].fillna(0)
 
 # clean up
 if '' in list(df_tmp.columns):
