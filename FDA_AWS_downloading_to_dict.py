@@ -182,21 +182,13 @@ for i in range(0, len(data_2)):
 print('data_2 is a {} where entries of data_2[0][\'results\'][0] are {}'.format(type_file, type_entry))
 print('Approximate Size of packed file is {size:.2f} MB'.format(size = size/10**6))
 
-# File information
-type_file = type(data_2)
-type_entry = type(data_2[0]['results'][0])
 
-size = 0
-for i in range(0, len(data_2)):
-    for j in range(0, len(data_2[i]['results'])):
-        size = size + sys.getsizeof(data_2[i]['results'][j])
-print('Number of files = {}'.format(len(file_name)))
-print('data_2 is a {} where entries of data_2[0][\'results\'][0] are {}'.format(type_file, type_entry))
-print('Approximate Size of packed file is {size:.2f} MB'.format(size = size/10**6))
-
+print('Saving files...')
 # General
 with open("./progress/data_2.txt", "wb") as fp:   #Pickling
     pickle.dump(data_2, fp)
 # General, filenames used in a general set of records
 with open("./progress/file_name.txt", "wb") as fp:   #Pickling
     pickle.dump(file_name, fp)
+
+print('Done. Congrats.')

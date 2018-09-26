@@ -25,7 +25,9 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 # read in the df
+print('Reading in the df.')
 df = pd.read_csv('./progress/modeling/df_extracted.csv', index_col = 0)
+print('Done.')
 # Select the files to save
 model_num = ['X_1', 'X_2', 'X_3']
 model_num = model_num[0]
@@ -35,6 +37,12 @@ save_entries = False
 save_entries_len = False
 save_unique_gn = False
 save_unique_di = False
+
+# Drop unnecessary columns
+df = df[['generic_name', 'drug_char',
+         'drug_indication', 'admin_route', 'reaction_medDRA_pt', 'serious', 'seriousness_congential_anomali',
+         'seriousness_death', 'seriousness_disabling', 'seriousness_hospitalization',
+         'seriousness_lifethreatening', 'seriousness_other']]
 
 # Drop missing generic names
 df['generic_name'] = df['generic_name'].replace('NA', np.nan)
