@@ -11,38 +11,40 @@ from sklearn.linear_model import LogisticRegression
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+model_num = "X_1"
+
 # Load the feature sets
-with open("FDA/FDA_misc/entries_X_3.txt", "rb") as fp:
+with open("FDA/FDA_misc/entries_" + model_num + '.txt', "rb") as fp:
     entries_1_1 = pickle.load(fp)
 entries = entries_1_1
 
 # Load the model for prediction
-with open("FDA/FDA_misc/models/LR_X_3_serious.pkl", "rb") as fp:   # Unpickling
+with open("FDA/FDA_misc/models/LR_" + model_num + "_serious.pkl", "rb") as fp:   # Unpickling
     LR_serious = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_X_3_seriousness_death.pkl", "rb") as fp:   # Unpickling
+with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_death.pkl", "rb") as fp:   # Unpickling
     LR_death = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_X_3_seriousness_disabling.pkl", "rb") as fp:   # Unpickling
+with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_disabling.pkl", "rb") as fp:   # Unpickling
     LR_disabling = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_X_3_seriousness_hospitalization.pkl", "rb") as fp:   # Unpickling
+with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_hospitalization.pkl", "rb") as fp:   # Unpickling
     LR_hospital = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_X_3_seriousness_lifethreatening.pkl", "rb") as fp:   # Unpickling
+with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_lifethreatening.pkl", "rb") as fp:   # Unpickling
     LR_lifethreatening = pickle.load(fp)
 
 # load the model for clustering
 # For serious
-with open("FDA/FDA_misc/models/KM_X_3_serious.pkl", "rb") as fp:
+with open("FDA/FDA_misc/models/KM_" + model_num + "_serious.pkl", "rb") as fp:
     cluster_serious = pickle.load(fp)
 # For death
-with open("FDA/FDA_misc/models/KM_X_3_seriousness_death.pkl", "rb") as fp:
+with open("FDA/FDA_misc/models/KM_" + model_num + "_seriousness_death.pkl", "rb") as fp:
     cluster_death = pickle.load(fp)
 # For Disabling
-with open("FDA/FDA_misc/models/KM_X_3_seriousness_disabling.pkl", "rb") as fp:
+with open("FDA/FDA_misc/models/KM_" + model_num + "_seriousness_disabling.pkl", "rb") as fp:
     cluster_disabling = pickle.load(fp)
 # For hospitalization
-with open("FDA/FDA_misc/models/KM_X_3_seriousness_hospitalization.pkl", "rb") as fp:
+with open("FDA/FDA_misc/models/KM_" + model_num + "_seriousness_hospitalization.pkl", "rb") as fp:
     cluster_hospital = pickle.load(fp)
 # For lifethreatening
-with open("FDA/FDA_misc/models/KM_X_3_seriousness_lifethreatening.pkl", "rb") as fp:
+with open("FDA/FDA_misc/models/KM_" + model_num + "_seriousness_lifethreatening.pkl", "rb") as fp:
     cluster_lifethreatening = pickle.load(fp)
 
 

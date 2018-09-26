@@ -78,10 +78,10 @@ hr {
     border-radius: 50%;
     width: 10em;
     height: 10em;
-    margin-left: 30%;
+    margin-left: 50%;
     margin-top: 5em;
     margin-bottom: 5em;
-    animation: spin 2s linear infinite;
+    animation: spin 0.5s linear infinite;
 }
 
 #button_div_inputs {
@@ -144,7 +144,7 @@ hr {
 
 #button_div_recomm {
   width: 70%;
-  margin-left: 10%;
+  margin-left: 12%;
   margin-bottom: 2em;
 }
 
@@ -179,7 +179,7 @@ hr {
 
 #recomm_button {
   width: 40%;
-  margin-left: 16%;
+  margin-left: 18%;
 }
 
 #recomm_title {
@@ -200,18 +200,23 @@ hr {
 }
 
 #recomm_serious {
+  margin-top: 1em;
   display: none;
 }
 #recomm_death {
+  margin-top: 1em;
   display: none;
 }
 #recomm_disabling {
+  margin-top: 1em;
   display: none;
 }
 #recomm_hospital {
+  margin-top: 1em;
   display: none;
 }
 #recomm_lifethreatening {
+  margin-top: 1em;
   display: none;
 }
 
@@ -220,25 +225,36 @@ hr {
   border-radius: 0.01em;
   border: dashed black 0.05em;
   padding: 2%;
-  width: 90%;
+  width: 60%;
   margin: 1%;
-  margin-left: 5%;
+  margin-top: 0%;
   margin-bottom: 0%;
+  margin-left: 20%;
   background-color: rgba(240, 240, 240, 1.0);
+  font-size: 1.5em;
+  text-align: justify;
+  list-style-type: none;
+  list-style-position: inside;
 }
 #di_div:hover {
   background-color: rgba(220, 220, 220, 1.0);
 }
+
+
 #gn_div {
   border-radius: 0.01em;
   border: dashed black 0.05em;
   padding: 2%;
-  width: 90%;
+  width: 60%;
   margin: 1%;
   margin-top: 0%;
   margin-bottom: 0%;
-  margin-left: 5%;
+  margin-left: 20%;
   background-color: rgba(240, 240, 240, 1.0);
+  font-size: 1.5em;
+  text-align: justify;
+  list-style-type: none;
+  list-style-position: inside;
 }
 #gn_div:hover {
   background-color: rgba(220, 220, 220, 1.0);
@@ -247,12 +263,16 @@ hr {
   border-radius: 0.01em;
   border: dashed black 0.05em;
   padding: 2%;
-  width: 90%;
+  width: 60%;
   margin: 1%;
   margin-top: 0%;
   margin-bottom: 0%;
-  margin-left: 5%;
+  margin-left: 20%;
   background-color: rgba(240, 240, 240, 1.0);
+  font-size: 1.5em;
+  text-align: justify;
+  list-style-type: none;
+  list-style-position: inside;
 }
 #rxn_div:hover {
   background-color: rgba(220, 220, 220, 1.0);
@@ -270,7 +290,7 @@ hr {
 
 #hood_button {
   width: 40%;
-  margin-left: 26%;
+  margin-left: 30%;
   margin-bottom: 2em;
 }
 

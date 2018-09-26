@@ -79,21 +79,21 @@ def FDA(request):
             # generic_name
             gn = [x for x in gn if x] # drop blanks
             if len(gn) > 0:
+                context_dict['input_gn'] = [item.upper() for item in gn]
                 gn_map = query_match(gn, 'generic_name')
                 feature_list.extend(gn_map)
-                context_dict['input_gn'] = [item.upper() for item in gn_map]
             # admin_route
             ar = [x for x in ar if x] # drop blanks
             if len(ar) > 0:
+                context_dict['input_ar'] = [item.upper() for item in ar]
                 ar_map = query_match(ar, 'admin_route')
                 feature_list.extend(ar_map)
-                context_dict['input_ar'] = [item.upper() for item in ar_map]
             # drug_indication
             di = [x for x in di if x] # drop blanks
             if len(di) > 0:
+                context_dict['input_di'] = [item.upper() for item in di]
                 di_map = query_match(di, 'drug_indication')
                 feature_list.extend(di_map)
-                context_dict['input_di'] = [item.upper() for item in di_map]
             # drug_char
             dc_map = []
             for dc_i in dc:
@@ -105,9 +105,9 @@ def FDA(request):
             feature_list.extend(dc_map)
             # reaction_medDRA
             rxn = [x for x in rxn if x] # drop blanks
-            rxn_map = query_match_rxn(rxn, lvl_in = "PT", lvl_out = "HLT", modeling = True) #### CHANGE lvl_out with varied features
+            context_dict['input_rxn'] = [item.upper() for item in rxn]
+            rxn_map = query_match(rxn, 'reaction_medDRA')
             feature_list.extend(rxn_map)
-            context_dict['input_rxn'] = [item.upper() for item in rxn_map]
 
             # create feature vector for input to model
             vec_input = feature_vec(feature_list)
@@ -157,18 +157,68 @@ def FDA(request):
             recom_disabling = cluster_pred(vec_input, outcome = "disabling")
             recom_hospital = cluster_pred(vec_input, outcome = "hospital")
             recom_serious = cluster_pred(vec_input, outcome = "lifethreatening")
-            # put the recom_features into categories
-            ##### EDIT recomm_match if you change feature sets!!! #
-            gn_recomm, di_recomm, ar_recomm, rxn_recomm = recomm_match(recom_list)
+            # put the recom_features into categories for each outcome
+
+            gn_recomm_1, di_recomm_1, ar_recomm_1, rxn_recomm_1 = recomm_match(recom_serious)
+            gn_recomm_2, di_recomm_2, ar_recomm_2, rxn_recomm_2 = recomm_match(recom_death)
+            gn_recomm_3, di_recomm_3, ar_recomm_3, rxn_recomm_3 = recomm_match(recom_disabling)
+            gn_recomm_4, di_recomm_4, ar_recomm_4, rxn_recomm_4 = recomm_match(recom_hospital)
+            gn_recomm_5, di_recomm_5, ar_recomm_5, rxn_recomm_5 = recomm_match(recom_serious)
+
+            # Serious
             # sent them to context_dict
-            if len(rxn_recomm) > 0:
-                context_dict['gn_recomm'] = gn_recomm
-            if len(rxn_recomm) > 0:
-                context_dict['di_recomm'] = di_recomm
-            if len(rxn_recomm) > 0:
-                context_dict['ar_recomm'] = ar_recomm
-            if len(rxn_recomm) > 0:
-                context_dict['rxn_recomm'] = rxn_recomm
+            if len(gn_recomm_1) > 0:
+                context_dict['gn_recomm_1'] = gn_recomm_1
+            if len(di_recomm_1) > 0:
+                context_dict['di_recomm_1'] = di_recomm_1
+            if len(ar_recomm_1) > 0:
+                context_dict['ar_recomm_1'] = ar_recomm_1
+            if len(rxn_recomm_1) > 0:
+                context_dict['rxn_recomm_1'] = rxn_recomm_1
+
+            # Death
+            # sent them to context_dict
+            if len(gn_recomm_2) > 0:
+                context_dict['gn_recomm_2'] = gn_recomm_2
+            if len(di_recomm_2) > 0:
+                context_dict['di_recomm_2'] = di_recomm_2
+            if len(ar_recomm_2) > 0:
+                context_dict['ar_recomm_2'] = ar_recomm_2
+            if len(rxn_recomm_2) > 0:
+                context_dict['rxn_recomm_2'] = rxn_recomm_2
+
+            # Disabling
+            # sent them to context_dict
+            if len(gn_recomm_3) > 0:
+                context_dict['gn_recomm_3'] = gn_recomm_3
+            if len(di_recomm_3) > 0:
+                context_dict['di_recomm_3'] = di_recomm_3
+            if len(ar_recomm_3) > 0:
+                context_dict['ar_recomm_3'] = ar_recomm_3
+            if len(rxn_recomm_3) > 0:
+                context_dict['rxn_recomm_3'] = rxn_recomm_3
+
+            # Hospital
+            # sent them to context_dict
+            if len(gn_recomm_4) > 0:
+                context_dict['gn_recomm_4'] = gn_recomm_4
+            if len(di_recomm_4) > 0:
+                context_dict['di_recomm_4'] = di_recomm_4
+            if len(ar_recomm_4) > 0:
+                context_dict['ar_recomm_4'] = ar_recomm_4
+            if len(rxn_recomm_4) > 0:
+                context_dict['rxn_recomm_4'] = rxn_recomm_4
+
+            # lifethreatening
+            # sent them to context_dict
+            if len(gn_recomm_5) > 0:
+                context_dict['gn_recomm_5'] = gn_recomm_5
+            if len(di_recomm_5) > 0:
+                context_dict['di_recomm_5'] = di_recomm_5
+            if len(ar_recomm_5) > 0:
+                context_dict['ar_recomm_5'] = ar_recomm_5
+            if len(rxn_recomm_5) > 0:
+                context_dict['rxn_recomm_5'] = rxn_recomm_5
 
     # respond to the request
     return render(request,'FDA.html',context_dict)

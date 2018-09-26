@@ -13,7 +13,8 @@
   <hr>
   <img id = "insight_logo" src="{% static 'images/logo-square.png' %}" alt="">
   <p id = "intro_abstract">
-    The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and the actions they are taking for their health.
+    The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and take more initiative to control it. Despite intentions this sometimes does more harm than good. Their insistance on transparency leads to health apps presenting very alarming diagnoses for mundane characteristics. One minute, you're complaining of a headache and the next you're stressing about brain aneurysms. <br><br>
+    The situation gets worse when difficult to pronounce chemicals are involved, namely prescription drugs. In this application I aim to assuage a concerned user's fears stemming from the use of new or unknown drugs. 
   </p>
   <hr>
 </div>
@@ -292,137 +293,146 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
     <!-- recommendations for serious -->
     <div id = "recomm_serious">
         <!-- Print the recommendations -->
-        {% if di_recomm %}
+        {% if di_recomm_1 %}
         <div id = "di_div" class="container">
-              The symptoms leading to drug use: <br>
+              <span id = "di_title">Drug Indication</span>
+              <br>
               <ul>
-                {% for recommendation in di_recomm %}
+                {% for recommendation in di_recomm_1 %}
                 <li>{{ recommendation }}</li>
                 {% endfor %}
               </ul>
         </div>
         {% endif %}
-        {% if gn_recomm %}
-          <div id = "gn_div" class = "container">
-                The drugs they took: <br>
+        {% if gn_recomm_1 %}
+        <div id = "gn_div" class = "container">
+              <span id = "gn_title">Generic Name</span>
+              <br>
+              <ul>
+                {% for recommendation in gn_recomm_1 %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+
+        {% if rxn_recomm_1 %}
+        <div id = "rxn_div" class="container">
+              <span id = "rxn_title">Reaction</span>
+              <br>
                 <ul>
-                  {% for recommendation in gn_recomm %}
+                  {% for recommendation in rxn_recomm_1 %}
                   <li>{{ recommendation }}</li>
                   {% endfor %}
                 </ul>
-          </div>
-          {% endif %}
-
-          {% if rxn_recomm %}
-          <div id = "rxn_div" class="container">
-                The reactions that directly caused their serious outcome: <br>
-                  <ul>
-                    {% for recommendation in rxn_recomm %}
-                    <li>{{ recommendation }}</li>
-                    {% endfor %}
-                  </ul>
-          </div>
-          {% endif %}
+        </div>
+        {% endif %}
     </div>
     <!-- recommendations for Death -->
     <div id = "recomm_death">
         <!-- Print the recommendations -->
-        {% if di_recomm %}
+        {% if di_recomm_2 %}
         <div id = "di_div" class="container">
-              The symptoms leading to drug use: <br>
+          <span id = "di_title">Drug Indication</span>
+          <br>
               <ul>
-                {% for recommendation in di_recomm %}
+                {% for recommendation in di_recomm_2 %}
                 <li>{{ recommendation }}</li>
                 {% endfor %}
               </ul>
         </div>
         {% endif %}
-        {% if gn_recomm %}
-          <div id = "gn_div" class = "container">
-                The drugs they took: <br>
+        {% if gn_recomm_2 %}
+        <div id = "gn_div" class = "container">
+              <span id = "gn_title">Generic Name</span>
+              <br>
+              <ul>
+                {% for recommendation in gn_recomm_2 %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+
+        {% if rxn_recomm_2 %}
+        <div id = "rxn_div" class="container">
+              <span id = "rxn_title">Reaction</span> <br>
                 <ul>
-                  {% for recommendation in gn_recomm %}
+                  {% for recommendation in rxn_recomm_2 %}
                   <li>{{ recommendation }}</li>
                   {% endfor %}
                 </ul>
-          </div>
-          {% endif %}
-
-          {% if rxn_recomm %}
-          <div id = "rxn_div" class="container">
-                The reactions that directly caused their serious outcome: <br>
-                  <ul>
-                    {% for recommendation in rxn_recomm %}
-                    <li>{{ recommendation }}</li>
-                    {% endfor %}
-                  </ul>
-          </div>
-          {% endif %}
+        </div>
+        {% endif %}
     </div>
     <!-- recommendations for Disabling -->
     <div id = "recomm_disabling">
         <!-- Print the recommendations -->
-        {% if di_recomm %}
+        {% if di_recomm_3 %}
         <div id = "di_div" class="container">
-              The symptoms leading to drug use: <br>
+          <span id = "di_title">Drug Indication</span>
+          <br>
               <ul>
-                {% for recommendation in di_recomm %}
+                {% for recommendation in di_recomm_3 %}
                 <li>{{ recommendation }}</li>
                 {% endfor %}
               </ul>
         </div>
         {% endif %}
-        {% if gn_recomm %}
-          <div id = "gn_div" class = "container">
-                The drugs they took: <br>
+        {% if gn_recomm_3 %}
+        <div id = "gn_div" class = "container">
+            <span id = "gn_title">Generic Name</span>
+            <br>
+              <ul>
+                {% for recommendation in gn_recomm_3 %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+        {% endif %}
+
+        {% if rxn_recomm_3 %}
+        <div id = "rxn_div" class="container">
+              <span id = "rxn_title">Reaction</span> <br>
                 <ul>
-                  {% for recommendation in gn_recomm %}
+                  {% for recommendation in rxn_recomm_3 %}
                   <li>{{ recommendation }}</li>
                   {% endfor %}
                 </ul>
-          </div>
-          {% endif %}
-
-          {% if rxn_recomm %}
-          <div id = "rxn_div" class="container">
-                The reactions that directly caused their serious outcome: <br>
-                  <ul>
-                    {% for recommendation in rxn_recomm %}
-                    <li>{{ recommendation }}</li>
-                    {% endfor %}
-                  </ul>
-          </div>
-          {% endif %}
+        </div>
+        {% endif %}
     </div>
     <!-- recommendations for Hospitalization -->
     <div id = "recomm_hospital">
         <!-- Print the recommendations -->
-        {% if di_recomm %}
+        {% if di_recomm_4 %}
         <div id = "di_div" class="container">
-              The symptoms leading to drug use: <br>
+          <span id = "di_title">Drug Indication</span>
+          <br>
               <ul>
-                {% for recommendation in di_recomm %}
+                {% for recommendation in di_recomm_4 %}
                 <li>{{ recommendation }}</li>
                 {% endfor %}
               </ul>
         </div>
         {% endif %}
-        {% if gn_recomm %}
+        {% if gn_recomm_4 %}
           <div id = "gn_div" class = "container">
-                The drugs they took: <br>
+            <span id = "gn_title">Generic Name</span>
+            <br>
                 <ul>
-                  {% for recommendation in gn_recomm %}
+                  {% for recommendation in gn_recomm_4 %}
                   <li>{{ recommendation }}</li>
                   {% endfor %}
                 </ul>
           </div>
           {% endif %}
 
-          {% if rxn_recomm %}
+          {% if rxn_recomm_4 %}
           <div id = "rxn_div" class="container">
-                The reactions that directly caused their serious outcome: <br>
+                <span id = "rxn_title">Reaction</span> <br>
                   <ul>
-                    {% for recommendation in rxn_recomm %}
+                    {% for recommendation in rxn_recomm_4 %}
                     <li>{{ recommendation }}</li>
                     {% endfor %}
                   </ul>
@@ -432,32 +442,34 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
     <!-- recommendations for Life Threatening -->
     <div id = "recomm_lifethreatening">
         <!-- Print the recommendations -->
-        {% if di_recomm %}
+        {% if di_recomm_5 %}
         <div id = "di_div" class="container">
-              The symptoms leading to drug use: <br>
+          <span id = "di_title">Drug Indication</span>
+          <br>
               <ul>
-                {% for recommendation in di_recomm %}
+                {% for recommendation in di_recomm_5 %}
                 <li>{{ recommendation }}</li>
                 {% endfor %}
               </ul>
         </div>
         {% endif %}
-        {% if gn_recomm %}
+        {% if gn_recomm_5 %}
           <div id = "gn_div" class = "container">
-                The drugs they took: <br>
+            <span id = "gn_title">Generic Name</span>
+            <br>
                 <ul>
-                  {% for recommendation in gn_recomm %}
+                  {% for recommendation in gn_recomm_5 %}
                   <li>{{ recommendation }}</li>
                   {% endfor %}
                 </ul>
           </div>
           {% endif %}
 
-          {% if rxn_recomm %}
+          {% if rxn_recomm_5 %}
           <div id = "rxn_div" class="container">
-                The reactions that directly caused their serious outcome: <br>
+                <span id = "rxn_title">Reaction</span> <br>
                   <ul>
-                    {% for recommendation in rxn_recomm %}
+                    {% for recommendation in rxn_recomm_5 %}
                     <li>{{ recommendation }}</li>
                     {% endfor %}
                   </ul>
@@ -695,7 +707,7 @@ $('#hood_button').click(function() {
 
 //  for the loading icon
 $( document ).ajaxStart(function() {
-  $("#wait").show();
+  $("#wait").hide();
   $("#Likelihoods").hide();
   $("#recommendations").hide();
   $("#button_div_inputs").hide();

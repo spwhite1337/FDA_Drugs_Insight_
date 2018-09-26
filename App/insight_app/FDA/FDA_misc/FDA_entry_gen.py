@@ -10,13 +10,15 @@ from difflib import SequenceMatcher
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+model_num = "X_1"
+
 # get the feature set as a list
-file_entries = 'FDA/FDA_misc/entries_X_3.txt'
+file_entries = 'FDA/FDA_misc/entries_' + model_num + '.txt'
 with open(file_entries, "rb") as fp:   # Unpickling
     entries = pickle.load(fp)
 entries = entries[:-7]
 # Get the length of each feature type in the feature set
-file_entries_len = 'FDA/FDA_misc/entries_len_X_3.txt'
+file_entries_len = 'FDA/FDA_misc/entries_len_' + model_num + '.txt'
 
 with open(file_entries_len, "rb") as fp:   # Unpickling
     entries_len = pickle.load(fp)
@@ -31,8 +33,7 @@ drug_indication_list = entries[sum(entries_len[0:2]): sum(entries_len[0:3])]
 admin_route_list = entries[sum(entries_len[0:3]): sum(entries_len[0:4])]
 # reaction_medDRA
 reaction_list = entries[sum(entries_len[0:4]): sum(entries_len[0:5])]
-print(len(entries))
-print(entries_len)
+
 # drug_char_entries
 drug_char_entries = (
                 (0, "--"),
@@ -63,7 +64,7 @@ reaction_all = list(dict_PT_HLT.keys())
 listed_features = [generic_name_all, admin_route_list, drug_indication_all, reaction_all, list(dict_PT_HLT.keys())]
 
 # Function for mapping user_input to feature set
-def query_match(query_in, query_cat, recomm = False, lvl = 'SOC'):
+def query_match(query_in, query_cat):
     """
     This function takes in a list of entries for a given category and returns the most similar in the feature list by text.
     """
@@ -85,6 +86,9 @@ def query_match(query_in, query_cat, recomm = False, lvl = 'SOC'):
         elif query_cat == 'admin_route':
             query = query.title()
             entries_list = admin_route_list
+        elif query_cat == "reaction_medDRA":
+            query = query.title()
+            entries_list = reaction_list
         else:
             print('bug?')
         # get similarities
@@ -273,7 +277,7 @@ def recomm_match(recomm_list):
     gn_recomm = query_match(gn_recomm, 'generic_name')
     di_recomm = query_match(di_recomm, 'drug_indication')
     ar_recomm = query_match(ar_recomm, 'admin_route')
-    rxn_recomm = query_match_rxn(rxn_recomm, lvl_in = "HLT", lvl_out = "HLT", modeling = False)  # CHANGE THIS WITH VARIED FEATURE SETS
+    rxn_recomm = query_match(rxn_recomm, 'reaction_medDRA')
     gn_recomm = [feat.title() for feat in gn_recomm]
     di_recomm = [feat.title() for feat in di_recomm]
     ar_recomm = [feat.title() for feat in ar_recomm if feat != 'Not Listed']
