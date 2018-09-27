@@ -13,9 +13,18 @@
   <hr>
   <img id = "insight_logo" src="{% static 'images/logo-square.png' %}" alt="">
   <p id = "intro_abstract">
-    The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and take more initiative to control it. Despite intentions this sometimes does more harm than good. Their insistance on transparency leads to health apps presenting very alarming diagnoses for mundane characteristics. One minute, you're complaining of a headache and the next you're stressing about brain aneurysms. <br><br>
-    The situation gets worse when difficult to pronounce chemicals are involved, namely prescription drugs. In this application I aim to assuage a concerned user's fears stemming from the use of new or unknown drugs. Assuming they have an adverse reaction from one of the drugs in their profile, I predict the likelihood of a serious outcome from the hypothetical adversity. 
-  </p>
+    The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and take more initiative to control it. Despite intentions this sometimes does more harm than good. Their insistance on transparency leads to health apps presenting very alarming diagnoses for mundane characteristics. One minute you're complaining of a headache; the next you're stressing about brain aneurysms.
+    <br><br>
+    The situation gets worse when difficult to pronounce chemicals are involved, i.e. prescription drugs. In this application I aim to assuage a concerned user's fears stemming from the use of new or unknown drugs. Assuming they have an adverse reaction from one of the drugs in their profile, I predict the likelihood of a serious outcome from the hypothetical adversity. I supplement these estimates with concrete recommendations or "Actions to Avoid" that will enable the user to keep the odds of a non-serious reaction in their favor.
+    <hr>
+    Tips to use the app:
+    <ul>
+      <li>Enter all your prescriptions or over-the-Counter drugs.</li>
+      <li>Use the auto-fill entires if you can.</li>
+      <li>You can describe your current situation or one you're curious about.</li>
+      <li>Check under the hood for a technical description.</li>
+      <li>HAVE FUN!</li>
+    </ul></p>
   <hr>
 </div>
 
@@ -122,7 +131,7 @@
 If you happen to have an adverse reaction from the drugs you're taking, here are the chances it will (i) be designated as serious, (ii) result in death, (iii) leave you disabled, (iv) result in hospitalization, (v) be Life-Threatening.<br><br>
 <!-- serious -->
   {% if serious_good %}
-      Serious (General): {{ serious_good }}%
+      Serious but Unspecified: {{ serious_good }}%
       <div class="progress">
           <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_good }}%">
@@ -130,7 +139,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
           </div>
      </div>
   {% elif serious_ok %}
-      Serious (General): {{ serious_ok }}%
+      Serious but Unspecified:  {{ serious_ok }}%
       <div class="progress">
           <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_ok }}%">
@@ -138,7 +147,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
           </div>
      </div>
   {% elif serious_bad %}
-      Serious (General): {{ serious_bad }}%
+      Serious but Unspecified:{{ serious_bad }}%
       <div class="progress">
           <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
           aria-valuemin="0" aria-valuemax="100" style="width:{{ serious_bad }}%">
@@ -149,34 +158,34 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
       <li>Virtually no risk of a serious outcome.</li><br><br>
   {% endif %}
 
-<!-- death -->
-  {% if death_good %}
-     Death: {{ death_good }}%
-      <div class="progress">
-          <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
-          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_good }}%">
-            <font id = "prob_output">{{ death_good }}</font>
-          </div>
-     </div>
-  {% elif death_ok %}
-      Death: {{ death_ok }}%
-      <div class="progress">
-          <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
-          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_ok }}%">
-            <font id = "prob_output">{{ death_ok }}</font>
-          </div>
-     </div>
-  {% elif death_bad %}
-      Death: {{ death_bad }}%
-      <div class="progress">
-          <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
-          aria-valuemin="0" aria-valuemax="100" style="width:{{ death_bad }}%">
-            <font id = "prob_output">{{ death_bad }}</font>
-          </div>
-     </div>
-  {% else %}
-      <li>Virtually no risk of death.</li><br><br>
-  {% endif %}
+  <!-- hospital -->
+    {% if hospital_good %}
+        Hospitalization: {{ hospital_good }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_good }}%">
+              <font id = "prob_output">{{ hospital_good }}</font>
+            </div>
+       </div>
+    {% elif hospital_ok %}
+        Hospitalization: {{ hospital_ok }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="200"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_ok }}%">
+              <font id = "prob_output">{{ hospital_ok }}</font>
+            </div>
+       </div>
+    {% elif hospital_bad %}
+        Hospitalization: {{ hospital_bad }}%
+        <div class="progress">
+            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="200"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_bad }}%">
+              <font id = "prob_output">{{ hospital_bad }}</font>
+            </div>
+       </div>
+    {% else %}
+        <li>Virtually no risk of Hospitalization.</li> <br><br>
+    {% endif %}
 
   <!-- disabling -->
     {% if disabling_good %}
@@ -207,38 +216,9 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         <li>Virtually no risk of a disabling reaction.</li><br><br>
     {% endif %}
 
-    <!-- hospital -->
-      {% if hospital_good %}
-          Hospitalization: {{ hospital_good }}%
-          <div class="progress">
-              <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_good }}%">
-                <font id = "prob_output">{{ hospital_good }}</font>
-              </div>
-         </div>
-      {% elif hospital_ok %}
-          Hospitalization: {{ hospital_ok }}%
-          <div class="progress">
-              <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="200"
-              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_ok }}%">
-                <font id = "prob_output">{{ hospital_ok }}</font>
-              </div>
-         </div>
-      {% elif hospital_bad %}
-          Hospitalization: {{ hospital_bad }}%
-          <div class="progress">
-              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="200"
-              aria-valuemin="0" aria-valuemax="100" style="width:{{ hospital_bad }}%">
-                <font id = "prob_output">{{ hospital_bad }}</font>
-              </div>
-         </div>
-      {% else %}
-          <li>Virtually no risk of Hospitalization.</li> <br><br>
-      {% endif %}
-
       <!-- LT -->
         {% if lifethreatening_good %}
-            Life-Threatening: {{ lifethreatening_good }}%
+          Life-Threatening (Survival): {{ lifethreatening_good }}%
             <div class="progress">
                 <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="200"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_good }}%">
@@ -246,7 +226,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                 </div>
            </div>
         {% elif lifethreatening_ok %}
-          Life-Threatening: {{ lifethreatening_ok }}%
+          Life-Threatening (Survival): {{ lifethreatening_ok }}%
             <div class="progress">
                 <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="200"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_ok }}%">
@@ -254,7 +234,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                 </div>
            </div>
         {% elif lifethreatening_bad %}
-          Life-Threatening: {{ lifethreatening_good }}%
+          Life-Threatening (Survival): {{ lifethreatening_good }}%
             <div class="progress">
                 <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="200"
                 aria-valuemin="0" aria-valuemax="100" style="width:{{ lifethreatening_bad }}%">
@@ -265,6 +245,34 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
           <li>Virtually no risk of life threatening reaction.</li> <br>
         {% endif %}
 
+        <!-- death -->
+          {% if death_good %}
+             Death: {{ death_good }}%
+              <div class="progress">
+                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100" style="width:{{ death_good }}%">
+                    <font id = "prob_output">{{ death_good }}</font>
+                  </div>
+             </div>
+          {% elif death_ok %}
+              Death: {{ death_ok }}%
+              <div class="progress">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100" style="width:{{ death_ok }}%">
+                    <font id = "prob_output">{{ death_ok }}</font>
+                  </div>
+             </div>
+          {% elif death_bad %}
+              Death: {{ death_bad }}%
+              <div class="progress">
+                  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100" style="width:{{ death_bad }}%">
+                    <font id = "prob_output">{{ death_bad }}</font>
+                  </div>
+             </div>
+          {% else %}
+              <li>Virtually no risk of death.</li><br><br>
+          {% endif %}
 </div>
 
 <!-- Recommendation Button -->
@@ -278,24 +286,24 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
   <h3 id = "recomm_title">Actions to Avoid</h3>
   <hr>
   <p id = "recomm_desc">
-    Considering the patients who had serious outcomes, the important differences between them and you are highlighted below. Interpret these as "items to avoid" if you can. Talk to your doctor about ways to prevent them or alternative treatments.
+    Considering the patients who had serious outcomes, the important differences between them and you are highlighted below. Interpret these as "items to avoid" if you can help it. As always, talk to your doctor or health professional before you do anything drastic.
     <br><br>
-    For Serious (General)
+    Click on the button to display the recommendations for a specific outcome:
   </p>
     <!-- Buttons for Recommendations -->
       <div class="btn-group">
           <button id="serious_button" type="button" class="btn btn-lg btn-primary">Serious (General)</button>
-          <button id="death_button" type="button" class="btn btn-lg btn-primary">Death</button>
-          <button id="disabling_button" type="button" class="btn btn-lg btn-primary">Disabling</button>
           <button id="hospital_button" type="button" class="btn btn-lg btn-primary">Hospitalization</button>
+          <button id="disabling_button" type="button" class="btn btn-lg btn-primary">Disabling</button>
           <button id="lifethreatening_button" type="button" class="btn btn-lg btn-primary">Life-Threatening</button>
+          <button id="death_button" type="button" class="btn btn-lg btn-primary">Death</button>
       </div>
     <!-- recommendations for serious -->
     <div id = "recomm_serious">
         <!-- Print the recommendations -->
         {% if di_recomm_1 %}
         <div id = "di_div" class="container">
-              <span id = "di_title">Drug Indication</span>
+              <span id = "di_title">Reasons for drugs:</span>
               <br>
               <ul>
                 {% for recommendation in di_recomm_1 %}
@@ -306,7 +314,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         {% endif %}
         {% if gn_recomm_1 %}
         <div id = "gn_div" class = "container">
-              <span id = "gn_title">Generic Name</span>
+              <span id = "gn_title">Drugs (Generic Name):</span>
               <br>
               <ul>
                 {% for recommendation in gn_recomm_1 %}
@@ -318,7 +326,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 
         {% if rxn_recomm_1 %}
         <div id = "rxn_div" class="container">
-              <span id = "rxn_title">Reaction</span>
+              <span id = "rxn_title">Adverse Reactions:</span>
               <br>
                 <ul>
                   {% for recommendation in rxn_recomm_1 %}
@@ -327,13 +335,17 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                 </ul>
         </div>
         {% endif %}
+
+        {% if di_recomm_1 == None and gn_recomm_1 == None and rxn_recomm_1 == None %}
+          <span id = "rxn_title">Nothing to Show Here.</span>
+        {% endif %}
     </div>
     <!-- recommendations for Death -->
     <div id = "recomm_death">
         <!-- Print the recommendations -->
         {% if di_recomm_2 %}
         <div id = "di_div" class="container">
-          <span id = "di_title">Drug Indication</span>
+              <span id = "di_title">Reasons for drugs:</span>
           <br>
               <ul>
                 {% for recommendation in di_recomm_2 %}
@@ -344,7 +356,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         {% endif %}
         {% if gn_recomm_2 %}
         <div id = "gn_div" class = "container">
-              <span id = "gn_title">Generic Name</span>
+              <span id = "gn_title">Drugs (Generic Name):</span>
               <br>
               <ul>
                 {% for recommendation in gn_recomm_2 %}
@@ -356,7 +368,8 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 
         {% if rxn_recomm_2 %}
         <div id = "rxn_div" class="container">
-              <span id = "rxn_title">Reaction</span> <br>
+              <span id = "rxn_title">Adverse Reactions:</span>
+               <br>
                 <ul>
                   {% for recommendation in rxn_recomm_2 %}
                   <li>{{ recommendation }}</li>
@@ -364,13 +377,16 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                 </ul>
         </div>
         {% endif %}
+        {% if di_recomm_2 == None and gn_recomm_2 == None and rxn_recomm_2 == None %}
+          <span id = "rxn_title">Nothing to Show Here.</span>
+        {% endif %}
     </div>
     <!-- recommendations for Disabling -->
     <div id = "recomm_disabling">
         <!-- Print the recommendations -->
         {% if di_recomm_3 %}
         <div id = "di_div" class="container">
-          <span id = "di_title">Drug Indication</span>
+              <span id = "di_title">Reasons for drugs:</span>
           <br>
               <ul>
                 {% for recommendation in di_recomm_3 %}
@@ -381,7 +397,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         {% endif %}
         {% if gn_recomm_3 %}
         <div id = "gn_div" class = "container">
-            <span id = "gn_title">Generic Name</span>
+              <span id = "gn_title">Drugs (Generic Name):</span>
             <br>
               <ul>
                 {% for recommendation in gn_recomm_3 %}
@@ -393,7 +409,8 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 
         {% if rxn_recomm_3 %}
         <div id = "rxn_div" class="container">
-              <span id = "rxn_title">Reaction</span> <br>
+              <span id = "rxn_title">Adverse Reactions:</span>
+              <br>
                 <ul>
                   {% for recommendation in rxn_recomm_3 %}
                   <li>{{ recommendation }}</li>
@@ -401,13 +418,16 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                 </ul>
         </div>
         {% endif %}
+        {% if di_recomm_3 == None and gn_recomm_3 == None and rxn_recomm_3 == None %}
+          <span id = "rxn_title">Nothing to Show Here.</span>
+        {% endif %}
     </div>
     <!-- recommendations for Hospitalization -->
     <div id = "recomm_hospital">
         <!-- Print the recommendations -->
         {% if di_recomm_4 %}
         <div id = "di_div" class="container">
-          <span id = "di_title">Drug Indication</span>
+              <span id = "di_title">Reasons for drugs:</span>
           <br>
               <ul>
                 {% for recommendation in di_recomm_4 %}
@@ -418,7 +438,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         {% endif %}
         {% if gn_recomm_4 %}
           <div id = "gn_div" class = "container">
-            <span id = "gn_title">Generic Name</span>
+                <span id = "gn_title">Drugs (Generic Name):</span>
             <br>
                 <ul>
                   {% for recommendation in gn_recomm_4 %}
@@ -430,7 +450,8 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 
           {% if rxn_recomm_4 %}
           <div id = "rxn_div" class="container">
-                <span id = "rxn_title">Reaction</span> <br>
+                <span id = "rxn_title">Adverse Reactions:</span>
+                <br>
                   <ul>
                     {% for recommendation in rxn_recomm_4 %}
                     <li>{{ recommendation }}</li>
@@ -438,13 +459,16 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
                   </ul>
           </div>
           {% endif %}
+          {% if di_recomm_4 == None and gn_recomm_4 == None and rxn_recomm_4 == None %}
+            <span id = "rxn_title">Nothing to Show Here.</span>
+          {% endif %}
     </div>
     <!-- recommendations for Life Threatening -->
     <div id = "recomm_lifethreatening">
         <!-- Print the recommendations -->
         {% if di_recomm_5 %}
         <div id = "di_div" class="container">
-          <span id = "di_title">Drug Indication</span>
+              <span id = "di_title">Reasons for drugs:</span>
           <br>
               <ul>
                 {% for recommendation in di_recomm_5 %}
@@ -455,7 +479,7 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
         {% endif %}
         {% if gn_recomm_5 %}
           <div id = "gn_div" class = "container">
-            <span id = "gn_title">Generic Name</span>
+                <span id = "gn_title">Drugs (Generic Name):</span>
             <br>
                 <ul>
                   {% for recommendation in gn_recomm_5 %}
@@ -467,13 +491,17 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 
           {% if rxn_recomm_5 %}
           <div id = "rxn_div" class="container">
-                <span id = "rxn_title">Reaction</span> <br>
+                <span id = "rxn_title">Adverse Reactions:</span>
+                 <br>
                   <ul>
                     {% for recommendation in rxn_recomm_5 %}
                     <li>{{ recommendation }}</li>
                     {% endfor %}
                   </ul>
           </div>
+          {% endif %}
+          {% if di_recomm_5 == None and gn_recomm_5 == None and rxn_recomm_5 == None %}
+            <span id = "rxn_title">Nothing to Show Here.</span>
           {% endif %}
     </div>
 

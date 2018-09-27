@@ -9,10 +9,10 @@ from django.urls import reverse
 from django.views.generic import View, TemplateView, FormView
 from FDA import forms
 
-from FDA.FDA_misc.FDA_entry_gen import query_match, query_match_rxn # connect input to the features
+from FDA.FDA_misc.FDA_entry_gen import query_match, query_match_recomm # connect input to the features
 from FDA.FDA_misc.FDA_entry_gen import feature_vec # generate a feature vector
 from FDA.FDA_misc.FDA_entry_gen import recomm_match # generate a feature vector
-from FDA.FDA_misc.ML_preds import LR_pred, cluster_pred # run the model
+from FDA.FDA_misc.ML_preds import RF_pred, cluster_pred # run the model
 from FDA.FDA_misc.FDA_entry_gen import entries
 from FDA.FDA_misc.FDA_entry_gen import listed_features
 
@@ -112,7 +112,7 @@ def FDA(request):
             # create feature vector for input to model
             vec_input = feature_vec(feature_list)
             # get the prediction probabilities
-            prob_output = LR_pred(vec_input)
+            prob_output = RF_pred(vec_input)
 
             # set up outputs for progress bars
             # Serious
@@ -158,12 +158,30 @@ def FDA(request):
             recom_hospital = cluster_pred(vec_input, outcome = "hospital")
             recom_serious = cluster_pred(vec_input, outcome = "lifethreatening")
             # put the recom_features into categories for each outcome
-
             gn_recomm_1, di_recomm_1, ar_recomm_1, rxn_recomm_1 = recomm_match(recom_serious)
             gn_recomm_2, di_recomm_2, ar_recomm_2, rxn_recomm_2 = recomm_match(recom_death)
             gn_recomm_3, di_recomm_3, ar_recomm_3, rxn_recomm_3 = recomm_match(recom_disabling)
             gn_recomm_4, di_recomm_4, ar_recomm_4, rxn_recomm_4 = recomm_match(recom_hospital)
             gn_recomm_5, di_recomm_5, ar_recomm_5, rxn_recomm_5 = recomm_match(recom_serious)
+            # match them to the input list
+            # generic name
+            gn_recomm_1 = query_match_recomm(gn_recomm_1, 'generic_name')
+            gn_recomm_2 = query_match_recomm(gn_recomm_2, 'generic_name')
+            gn_recomm_3 = query_match_recomm(gn_recomm_3, 'generic_name')
+            gn_recomm_4 = query_match_recomm(gn_recomm_4, 'generic_name')
+            gn_recomm_5 = query_match_recomm(gn_recomm_5, 'generic_name')
+            # drug indication
+            di_recomm_1 = query_match_recomm(di_recomm_1, 'drug_indication')
+            di_recomm_2 = query_match_recomm(di_recomm_2, 'drug_indication')
+            di_recomm_3 = query_match_recomm(di_recomm_3, 'drug_indication')
+            di_recomm_4 = query_match_recomm(di_recomm_4, 'drug_indication')
+            di_recomm_5 = query_match_recomm(di_recomm_5, 'drug_indication')
+            # reaction_medDRA
+            rxn_recomm_1 = query_match_recomm(rxn_recomm_1, 'drug_indication')
+            rxn_recomm_2 = query_match_recomm(rxn_recomm_2, 'drug_indication')
+            rxn_recomm_3 = query_match_recomm(rxn_recomm_3, 'drug_indication')
+            rxn_recomm_4 = query_match_recomm(rxn_recomm_4, 'drug_indication')
+            rxn_recomm_5 = query_match_recomm(rxn_recomm_5, 'drug_indication')
 
             # Serious
             # sent them to context_dict

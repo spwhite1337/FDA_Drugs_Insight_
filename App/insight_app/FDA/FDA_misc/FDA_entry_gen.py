@@ -101,137 +101,41 @@ def query_match(query_in, query_cat):
     # return matched entry list
     return entry_query
 
-def query_match_rxn(query_in, lvl_in, lvl_out, modeling = True):
-    entries_list = reaction_list #
-    print("entries_list is {}".format(entries_list))
-    PT_list = list(dict_PT_HLT.keys())
-    HLT_list = list(dict_HLT_HLGT.keys())
-    HLGT_list = list(dict_HLGT_SOC.keys())
-    SOC_list = list(set(list(dict_HLGT_SOC.values()))) # get unique SOC values
-    # 1. match to lvl_in by spelling
-    # 2. If for modeling, match it to the relevant entries list
-    # 3. If for recommendation or display, convert it via dictionaries
-
+def query_match_recomm(query_in, query_cat):
+    """
+    This function takes in a list of entries for a given category and returns the most similar in the input list by text
+    """
     entry_query = []
+    # clean up input
     for query in query_in:
-        query = query.upper()
-        # get it to the closest lvl_in
-        if lvl_in == "SOC":
-            # get similarities
-            num = []
-            for entry in SOC_list:
-                num.append(SequenceMatcher(None, query, entry).ratio())
-            # get best matched entry
-            entry_index = num.index(max(num))
-            # now the query is actually in SOC
-            query = SOC_list[entry_index]
+        # clean up input
+        if query_cat == 'generic_name':
+            query = query.upper()
+            entries_list = generic_name_all
 
-            if modeling:
-                # match to the entries list
-                num = []
-                for entry in entries_list:
-                    num.append(SequenceMatcher(None, query, entry).ratio())
-                # get best matched entry
-                entry_index = num.index(max(num))
-                entry_query.append(entries_list[entry_index])
-                # we got the entry in feature list
-            else:
-                # just return the SOC
-                entry_query.append(query)
+        # clean up input
+        elif query_cat == 'drug_indication':
+            query = query.upper()
+            entries_list = drug_indication_all
 
-        if lvl_in == "HLGT":
-            # get similarities
-            num = []
-            for entry in HLGT_list:
-                num.append(SequenceMatcher(None, query, entry).ratio())
-            # get best matched entry
-            entry_index = num.index(max(num))
-            # now the query is actually in HLGT
-            query = HLGT_list[entry_index]
-
-            if modeling:
-                # match to the entries list
-                num = []
-                for entry in entries_list:
-                    num.append(SequenceMatcher(None, query, entry).ratio())
-                # get best matched entry
-                entry_index = num.index(max(num))
-                entry_query.append(entries_list[entry_index])
-                # we got the entry in feature list
-            else:
-                if lvl_out == "SOC":
-                    # convert with dicts
-                    entry_query.append(dict_HLGT_SOC[query])
-                if lvl_out == "HLGT":
-                    # just return the HLGT
-                    entry_query.append(query)
-
-        if lvl_in == "HLT":
-            # get similarities
-            num = []
-            for entry in HLT_list:
-                num.append(SequenceMatcher(None, query, entry).ratio())
-            # get best matched entry
-            entry_index = num.index(max(num))
-            # now the query is actually in HLT
-            query = HLT_list[entry_index]
-
-            if modeling:
-                # match to the entries list
-                num = []
-                for entry in entries_list:
-                    num.append(SequenceMatcher(None, query, entry).ratio())
-                # get best matched entry
-                entry_index = num.index(max(num))
-                entry_query.append(entries_list[entry_index])
-                # we got the entry in feature list
-            else:
-                if lvl_out == "SOC":
-                    # convert with dicts
-                    entry_query.append(dict_HLGT_SOC[dict_HLT_HLGT[query]])
-                if lvl_out == "HLGT":
-                    # convert with dicts
-                    entry_query.append(dict_HLT_HLGT[query])
-                if lvl_out == "HLT":
-                    # just return the HLT
-                    entry_query.append(query)
-
-        if lvl_in == "PT":
-            # get similarities
-            num = []
-            for entry in PT_list:
-                num.append(SequenceMatcher(None, query, entry).ratio())
-            # get best matched entry
-            entry_index = num.index(max(num))
-            # now the query is actually in PT
-            query = PT_list[entry_index]
-
-            if modeling:
-                # match to the entries list
-                print("query is {}".format(query))
-                num = []
-                for entry in entries_list:
-                    print("entry is {}".format(entry))
-                    num.append(SequenceMatcher(None, query, entry).ratio())
-                # get best matched entry
-                entry_index = num.index(max(num))
-                entry_query.append(entries_list[entry_index])
-                # we got the entry in feature list
-
-            else:
-                if lvl_out == "SOC":
-                    # convert with dicts
-                    entry_query.append(dict_HLGT_SOC[dict_HLT_HLGT[dict_PT_HLT[query]]])
-                if lvl_out == "HLGT":
-                    # convert with dicts
-                    entry_query.append(dict_HLT_HLGT[dict_PT_HLT[query]])
-                if lvl_out == "HLT":
-                    # convert with dicts
-                    entry_query.append(dict_PT_HLT[query])
-                if lvl_out == "PT":
-                    # just return the PT
-                    entry_query.append(query)
-
+        # clean up input
+        elif query_cat == 'admin_route':
+            query = query.title()
+            entries_list = admin_route_list
+        elif query_cat == "reaction_medDRA":
+            query = query.title()
+            entries_list = reaction_all
+        else:
+            print('bug?')
+        # get similarities
+        num = []
+        for entry in entries_list:
+            num.append(SequenceMatcher(None, query, entry).ratio())
+        # get best matched entry
+        entry_index = num.index(max(num))
+        entry_query.append(entries_list[entry_index])
+        # tidy it up
+        entry_query = [x.title() for x in entry_query]
     # return matched entry list
     return entry_query
 

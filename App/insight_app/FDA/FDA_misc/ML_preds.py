@@ -4,6 +4,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 import pandas as pd
 import numpy as np
 import pickle
+from math import floor
 # Load scikit's random forest classifier library
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -19,16 +20,16 @@ with open("FDA/FDA_misc/entries_" + model_num + '.txt', "rb") as fp:
 entries = entries_1_1
 
 # Load the model for prediction
-with open("FDA/FDA_misc/models/LR_" + model_num + "_serious.pkl", "rb") as fp:   # Unpickling
-    LR_serious = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_death.pkl", "rb") as fp:   # Unpickling
-    LR_death = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_disabling.pkl", "rb") as fp:   # Unpickling
-    LR_disabling = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_hospitalization.pkl", "rb") as fp:   # Unpickling
-    LR_hospital = pickle.load(fp)
-with open("FDA/FDA_misc/models/LR_" + model_num + "_seriousness_lifethreatening.pkl", "rb") as fp:   # Unpickling
-    LR_lifethreatening = pickle.load(fp)
+with open("FDA/FDA_misc/models/RF_" + model_num + "_serious.pkl", "rb") as fp:   # Unpickling
+    RF_serious = pickle.load(fp)
+with open("FDA/FDA_misc/models/RF_" + model_num + "_seriousness_death.pkl", "rb") as fp:   # Unpickling
+    RF_death = pickle.load(fp)
+with open("FDA/FDA_misc/models/RF_" + model_num + "_seriousness_disabling.pkl", "rb") as fp:   # Unpickling
+    RF_disabling = pickle.load(fp)
+with open("FDA/FDA_misc/models/RF_" + model_num + "_seriousness_hospitalization.pkl", "rb") as fp:   # Unpickling
+    RF_hospital = pickle.load(fp)
+with open("FDA/FDA_misc/models/RF_" + model_num + "_seriousness_lifethreatening.pkl", "rb") as fp:   # Unpickling
+    RF_lifethreatening = pickle.load(fp)
 
 # load the model for clustering
 # For serious
@@ -49,22 +50,23 @@ with open("FDA/FDA_misc/models/KM_" + model_num + "_seriousness_lifethreatening.
 
 
 # Generate RF preds
-# def RF_pred(vec_input):
-#     """
-#     Returns the set of probabilities for the range of outcomes from the RF model
-#     """
-#     # Return the probability that the results is not serious
-#     serious_prob = round(RF_1_1_serious.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
-#     death_prob = round(RF_1_1_death.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
-#     disabling_prob = round(RF_1_1_disabling.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
-#     hospital_prob = round(RF_1_1_hospital.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
-#     lifethreatening_prob = round(RF_1_1_lifethreatening.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
-#     # return the list
-#     type_probs = ['Serious', 'Death', 'Disabling', 'Hospitalization', 'Life Threatening']
-#     probs = [serious_prob, death_prob, disabling_prob, hospital_prob, lifethreatening_prob]
-#     probs = [100-x for x in probs]
-#     prob_output = zip(type_probs, probs)
-#     return probs
+def RF_pred(vec_input):
+    """
+    Returns the set of probabilities for the range of outcomes from the RF model
+    """
+    # Return the probability that the results is not serious
+    serious_prob = round(RF_serious.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    death_prob = round(RF_death.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    disabling_prob = round(RF_disabling.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    hospital_prob = round(RF_hospital.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    lifethreatening_prob = round(RF_lifethreatening.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    # return the list
+    type_probs = ['Serious', 'Death', 'Disabling', 'Hospitalization', 'Life Threatening']
+    probs = [serious_prob, death_prob, disabling_prob, hospital_prob, lifethreatening_prob]
+    probs = [(100-x) for x in probs]
+    probs = [floor(x*10)/10 for x in probs]
+    prob_output = zip(type_probs, probs)
+    return probs
 
 # Generate LR preds
 def LR_pred(vec_input):
@@ -72,7 +74,7 @@ def LR_pred(vec_input):
     Returns the set of probabilities for the range of outcomes from the RF model
     """
     # Return the probability that the results is not serious
-    serious_prob = round(LR_serious.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
+    serious_prob = np.round(LR_serious.predict_proba(vec_input.reshape(1,-1))[0][0], decimals = 1)*100
     death_prob = round(LR_death.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
     disabling_prob = round(LR_disabling.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
     hospital_prob = round(LR_hospital.predict_proba(vec_input.reshape(1,-1))[0][0],2)*100
@@ -80,7 +82,8 @@ def LR_pred(vec_input):
     # return the list
     type_probs = ['Serious', 'Death', 'Disabling', 'Hospitalization', 'Life Threatening']
     probs = [serious_prob, death_prob, disabling_prob, hospital_prob, lifethreatening_prob]
-    probs = [100-x for x in probs]
+    probs = [(100-x) for x in probs]
+    probs = [floor(x*10)/10 for x in probs]
     prob_output = zip(type_probs, probs)
     return probs
 
