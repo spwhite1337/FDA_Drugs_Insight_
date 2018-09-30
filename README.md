@@ -14,6 +14,8 @@ Necessary packages:
 - jupyter_notebooks_CORE has a set of notebooks to explain the code, probably the best place to start in the project
 - medDRA is a folder with supplementary files for analysis
 
+The app is on display at http://www.scottpwhite.com/DataProducts/FDA
+
 
 Link to data source:
 - https://open.fda.gov/apis/drug/event/
