@@ -15,18 +15,37 @@
   <p id = "intro_abstract">
     The popularity of health applications (e.g. WebMD) has inspired the public to seek and gather more information on their health and take more initiative to control it. Despite intentions this sometimes does more harm than good. Their insistance on transparency leads to health apps presenting very alarming diagnoses for mundane characteristics. One minute you're complaining of a headache; the next you're stressing about brain aneurysms.
     <br><br>
-    The situation gets worse when difficult to pronounce chemicals are involved, i.e. prescription drugs. In this application I aim to assuage a concerned user's fears stemming from the use of new or unknown drugs. Assuming they have an adverse reaction from one of the drugs in their profile, I predict the likelihood of a serious outcome from the hypothetical adversity. I supplement these estimates with concrete recommendations or "Actions to Avoid" that will enable the user to keep the odds of a non-serious reaction in their favor.
+    The situation gets worse when difficult to pronounce chemicals are involved, i.e. prescription drugs. In this application I aim to assuage a concerned user's fears stemming from the use of new or unknown drugs. Assuming they have an
+    <span class="popup" onclick="popup_func_1()">adverse reaction
+      <span class="popuptext" id="myPopup_1">Adverse Drug Reaction (WHO): 'A response to a drug which is noxious
+      and unintended, and which occurs at
+      doses normally used in humans for the
+      prophylaxis, diagnosis, or therapy of
+      disease, or for the modifications of
+      physiological function.
+    </span>
+    </span>
+    from one of the drugs in their profile, I predict the likelihood of a serious outcome from the hypothetical adversity. I supplement these estimates with concrete recommendations or "Actions to Avoid" that will enable the user to keep the odds of a non-serious reaction in their favor.
+    <br><br>
+    The goal is to shift the user's reference frame from an anxious patient to an active agent in their personal health. Enjoy!
     <hr>
     Tips to use the app:
     <ul>
       <li>Enter all your prescriptions or over-the-Counter drugs.</li>
-      <li>Use the auto-fill entires if you can.</li>
+      <li>Use the auto-fill entries if you can.</li>
       <li>You can describe your current situation or one you're curious about.</li>
       <li>Check under the hood for a technical description.</li>
       <li>HAVE FUN!</li>
     </ul></p>
   <hr>
 </div>
+
+<!-- Adverse Drug Reaction (WHO): 'A response to a drug which is noxious
+and unintended, and which occurs at
+doses normally used in man for the
+prophylaxis, diagnosis, or therapy of
+disease, or for the modifications of
+physiological function -->
 
 <div id="form_div"class="container">
   <form method="post">
@@ -127,8 +146,38 @@
 
 <!-- Likelihoods -->
 <div id = "Likelihoods">
-<h3 id = "Likelihoods_title">Likelihood Estimates</h3>
-If you happen to have an adverse reaction from the drugs you're taking, here are the chances it will (i) be designated as serious, (ii) result in death, (iii) leave you disabled, (iv) result in hospitalization, (v) be Life-Threatening.<br><br>
+<h3 id = "Likelihoods_title">Likelihood of Adversity Estimates</h3>
+If you happen to have an adverse reaction from the drugs you're taking (<a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5784181/" target = "_blank">~5-10% of all users</a>), here are the chances it will (i)
+      <span class="popup" onclick="popup_func_2()">be designated as serious (general category),
+        <span class="popuptext" id="myPopup_2">
+          Any untoward medical occurrence that
+        at any dose;
+        <ul>
+          <li>Results in death</li>
+          <li>Life threatening</li>
+          <li>Requires inpatient hospitalization or
+          prolongation of existing hospitalization</li>
+          <li>Results in persistent of significant disability
+          or incapacity</li>
+          <li>Results in a response designated as "other".</li>
+        </ul>
+      </span>
+      </span>
+
+(ii) result in hospitalization, (iii) cause a disabling reaction, (iv) be Life-Threatening, or (v) result in death.<br><br>
+
+
+<!-- Any untoward medical occurrence that
+at any dose;
+– Results in death
+– Life threatening
+– Requires inpatient hospitalization or
+prolongation of existing hospitalization
+– Results in persistent of significant disability
+or incapacity
+ -->
+<!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3554560/ -->
+<!-- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5784181/ -->
 <!-- serious -->
   {% if serious_good %}
       Serious but Unspecified: {{ serious_good }}%
@@ -520,7 +569,31 @@ If you happen to have an adverse reaction from the drugs you're taking, here are
 </div>
 
 <div id = "under_the_hood" class="containers">
-  <p>this is under the hood</p>
+  <p id = "hood_text">
+    The full code for this project can be found on my <a href="https://github.com/spwhite1337/FDA_Drugs_Insight_" target = "_blank">
+      GitHub Page.</a> Slides for a presentation on the project can be found <a href="#">here.</a>
+    <br><br>
+    The data originates from <a href="open.fda.gov" target = "_blank">open.fda.gov</a> as a part of their project to facilitate trust and transparency with the public. I extracted a subset and consolidated it into a sparse feature matrix with principal features of generic drug name, the drug indication, and drug reaction. The dimensions of the categorical features were reduced by clustering via an Affinity Propagation algorithm.
+    <br><br>
+    The resulting sparse matrix contained up to one million records and 2247 features that are one-hot-encoded from the patient's drug profile. There are five outcomes: Not Serious, Serious (General, including miscellaneous), Hospitalization, Life Threatening, and Death.<br>
+    <img id = "hood_img1" src="{% static 'images/sparse_matrix.png' %}" alt=""><br>
+    <br><br>
+    The input profile was connected to the outcomes via three models: a random forest ensemble, a logistic regression, and a naive bayes algorithm. As shown in the following figures, the random forest ensemble was best in terms of accuracy and precision while the naive bayes algorithm was best in terms of recall. The logistic regression algorithm is the least computationally demanding.<br>
+    <img id = "hood_img2" src="{% static 'images/acc_all.png' %}" alt=""><br>
+    <img id = "hood_img3" src="{% static 'images/recall_all.png' %}" alt=""><br>
+    <img id = "hood_img4" src="{% static 'images/precision_all.png' %}" alt=""><br>
+    I selected the Random Forest Ensemble for production due to its superior precision, the most important metric for the purposes of this application.
+    <br><br>
+    The final plots show the dependence of random forest performance on data size. The data is taken from the third quarter of 2017 to the second quarter of 2018 at varying sample sizes. The relationship between performance and data is not cleanly monotonic implying either (i) much more data is needed or (ii) the data inherently flucuates making a perfect model intractable.<br>
+    <img id = "hood_img5" src="{% static 'images/acc_RF.png' %}" alt=""><br>
+    <img id = "hood_img6" src="{% static 'images/recall_RF.png' %}" alt=""><br>
+    <img id = "hood_img7" src="{% static 'images/precision_RF.png' %}" alt=""><br>
+
+    <br><br>
+    The Recommendations were generated by clustering the positive cases via K-means, identifying the cluster the input profile most closely matches, then returning the largest magnitude cluster features that were not present in the user profile. These represent the most effective items to avoid in order to prevent your likelihoods from increasing.
+    <br><br>
+    Feel free to reach out with any questions.
+  </p>
 </div>
 
 <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
@@ -544,7 +617,7 @@ var di_entries = JSON.parse(di_entries_string);
 var rxn_entries_string = unescape("{{ rxn_entries_JSON | safe | escapejs }}");
 var rxn_entries = JSON.parse(rxn_entries_string);
 
-  // Autocomplete function
+// Autocomplete function
   $( function fill_entries() {
 
     $( '#gn_form' ).autocomplete({
@@ -735,7 +808,7 @@ $('#hood_button').click(function() {
 
 //  for the loading icon
 $( document ).ajaxStart(function() {
-  $("#wait").hide();
+  $("#wait").show();
   $("#Likelihoods").hide();
   $("#recommendations").hide();
   $("#button_div_inputs").hide();
@@ -749,6 +822,17 @@ $( "#FDA_button" ).click(function() {
   $( ".result" ).load( "ajax/test.html" );
 });
 
+// For popup
+// When the user clicks on <div>, open the popup
+function popup_func_1() {
+    var popup = document.getElementById("myPopup_1");
+    popup.classList.toggle("show");
+}
+
+function popup_func_2() {
+    var popup = document.getElementById("myPopup_2");
+    popup.classList.toggle("show");
+}
 </script>
 
 {% endblock %}
