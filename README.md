@@ -39,16 +39,6 @@ Ignored Files:
 
 ## 5. Links
 
-- AWS_scripts are the .py files used to analyze the data on Amazon Web Services
-- App is a preliminary set of .py files for application display and interactivity
-- Presentations are general files for presenting the project during the Fellowship
-- helper_funcs is a folder with the core files used for the bulk of the raw analysis
-- jupyter_notebooks_CORE has a set of notebooks to explain the code, probably the best place to start in the project
-- medDRA is a folder with supplementary files for analysis
-
-The app is on display at http://www.scottpwhite.com/DataProducts/FDA
-
-
 Link to data source:
 - https://open.fda.gov/apis/drug/event/
 
