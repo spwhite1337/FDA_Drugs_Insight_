@@ -24,7 +24,6 @@ People are routinely frightened by the results of online health app, albeit irra
 Necessary packages:
 - scki-kit learn, pandas, numpy, django, urllib, matplotlib, seaborn
 
-<<<<<<< HEAD
 ## 4. Untracked files
 
 Ignored Files:
@@ -39,7 +38,7 @@ Ignored Files:
 - *.pptx (presentation files (private))
 
 ## 5. Links
-=======
+
 - AWS_scripts are the .py files used to analyze the data on Amazon Web Services
 - App is a preliminary set of .py files for application display and interactivity
 - Presentations are general files for presenting the project during the Fellowship
@@ -49,7 +48,6 @@ Ignored Files:
 
 The app is on display at http://www.scottpwhite.com/DataProducts/FDA
 
->>>>>>> 511901c75821c68f76e299d7a6de2730b7e1bbed
 
 Link to data source:
 - https://open.fda.gov/apis/drug/event/
