@@ -3,7 +3,7 @@ Supplement to Health Apps that shows the likelihood of a serious reaction to dru
 
 ## 0. Notes
 
-This repo contains the code for the final project of the Insight Data Science fellowship program I did in the summer of 2018. This code is trash. I was gonna update it so it would be functional (unfortunately I don't even know how it works), but realized it is a useful "relic" on my Data Science journey and a helpful tool to show new datasets where you will start from and where you can go.
+This repo contains the code for the final project of the Insight Data Science fellowship program I did in the summer of 2018. This code is trash. I was gonna update it so it would be functional (unfortunately I don't even know how it works), but realized it is a useful "relic" on my Data Science journey and a helpful tool to show new data scientists where you will start from and where you can go.
 
 ## 1. Overview
 
